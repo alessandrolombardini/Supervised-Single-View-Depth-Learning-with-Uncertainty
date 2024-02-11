@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+
+WHAT_exp
+WHAT_papr
+WHAT_ref
+WHAT_plan.md
+
+*.pyc
+*.xml
