@@ -1,6 +1,7 @@
 import os
 import math
 import sys
+import numpy as np
 from datetime import datetime
 from functools import reduce
 
@@ -56,14 +57,47 @@ class Checkpoint:
         self.last_epoch = load_ckpt['last_epoch']
 
 
-def calc_psnr(output, label, rgb_range=1.):
+def compute_psnr(output, label, rgb_range=1.):
     if label.nelement() == 1: return 0
-
     diff = (output - label) / rgb_range
     mse = diff.pow(2).mean()
+    return -10 * torch.log10(mse)
 
-    return -10 * math.log10(mse)
+def compute_rmse(output, label):
+    if label.nelement() == 1: return 0
+    mse = (output - label).pow(2).mean().sqrt()
+    return mse
 
+def sparsification(input_instance, pred_instance, uncertainty):
+    error = (input_instance - pred_instance).pow(2) # RMSE -> SE (without mean and root)
+    x, y = np.unravel_index(np.argsort(uncertainty, axis=None), uncertainty.shape)
+    ranking = np.stack((x, y), axis=1)
+    sparsification = []
+    for x, y in ranking:
+        sparsification.append(error[x][y])
+    return np.array(sparsification)    
+        
+def compute_ause(input_batch, result_batch):
+    """Compute the Area Under the Sparsification Error (AUSE)."""
+    ause = []
+    for instance_id in range(input_batch.shape[0]):
+        input_instance = input_batch[instance_id][0]
+        mean_result = result_batch['mean'][instance_id][0]
+        var_result = result_batch['var'][instance_id][0]
+        
+        # Compute sparsification curves for the predicted depth map
+        error = (input_instance - mean_result).pow(2) # RMSE -> SE (without mean and root)
+        sparsification_prediction = sparsification(input_instance,
+                                                   mean_result,
+                                                   var_result)
+        sparsification_oracle = sparsification(input_instance, 
+                                               mean_result, 
+                                               error)
+        # Calculate the error difference between the sparsification curves
+        sparsification_errors = sparsification_oracle - sparsification_prediction
+        # Compute the AUSE by integrating the absolute values of the error differences
+        ause = np.trapz(np.abs(sparsification_errors), np.arange(sparsification_errors.shape[0]))
+    return ause.mean()
 
 def make_optimizer(config, model):
     trainable = filter(lambda x: x.requires_grad, model.parameters())

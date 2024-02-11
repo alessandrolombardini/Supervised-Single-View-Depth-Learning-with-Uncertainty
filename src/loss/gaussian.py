@@ -3,9 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class MSE_VAR(nn.Module):
+class GAUSSIAN(nn.Module):
     def __init__(self, var_weight):
-        super(MSE_VAR, self).__init__()
+        super(GAUSSIAN, self).__init__()
         self.var_weight = var_weight
 
     def forward(self, results, label):

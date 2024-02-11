@@ -1,9 +1,12 @@
 import numpy as np
+import pandas as pd
+import math
 from torch.utils.tensorboard import SummaryWriter
+from torch_uncertainty.metrics import AUSE
 
 from model import *
 from loss import Loss
-from util import make_optimizer, calc_psnr, summary
+from util import make_optimizer, compute_psnr, compute_ause, summary
 
 
 class Operator:
@@ -29,6 +32,8 @@ class Operator:
             print("Loading model... ")
             self.load(self.ckpt)
             print(self.ckpt.last_epoch, self.ckpt.global_step)
+
+
 
     def train(self, data_loader):
         last_epoch = self.ckpt.last_epoch
@@ -67,7 +72,7 @@ class Operator:
 
             # use tensorboard
             if self.tensorboard:
-                print(self.optimizer.get_lr(), epoch)
+                #print(self.optimizer.get_lr(), epoch)
                 self.summary_writer.add_scalar('epoch_lr',
                                                self.optimizer.get_lr(), epoch)
 
@@ -79,6 +84,8 @@ class Operator:
 
         self.summary_writer.close()
 
+
+
     def test(self, data_loader):
         with torch.no_grad():
             self.model.eval()
@@ -86,19 +93,39 @@ class Operator:
             total_psnr = 0.
             psnrs = []
             test_batch_num = len(data_loader['test'])
+
+            if self.uncertainty != 'normal':
+                auses = []
+                total_ause = 0.
+
             for batch_idx, batch_data in enumerate(data_loader['test']):
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
                 batch_label = batch_label.to(self.config.device)
 
-                # forward
+                # Forward
                 batch_results = self.model(batch_input)
-                current_psnr = calc_psnr(batch_results['mean'], batch_input)
+
+                # Metrices 
+                ## Calculate PSNR
+                current_psnr = compute_psnr(batch_results['mean'], batch_input)
                 psnrs.append(current_psnr)
                 total_psnr = sum(psnrs) / len(psnrs)
-                print("Test iter: {:03d}/{:03d}, Total: {:5f}, Current: {:05f}".format(
-                    batch_idx, test_batch_num,
-                    total_psnr, psnrs[batch_idx]))
+                ## AUSE
+                if self.uncertainty != "normal":
+                    current_ause = compute_ause(batch_input, batch_results)
+                    auses.append(current_ause)
+                    total_ause = total_ause + current_ause
+
+                
+                if self.uncertainty != 'normal':
+                    print("Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
+                        batch_idx, test_batch_num, auses[batch_idx], psnrs[batch_idx]))
+                else:
+                    print("Test: Iter: {:03d}/{:03d}, PSNR {:5f}".format(
+                        batch_idx, test_batch_num, psnrs[batch_idx]))
+                    
+                
 
             # use tensorboard
             if self.tensorboard:

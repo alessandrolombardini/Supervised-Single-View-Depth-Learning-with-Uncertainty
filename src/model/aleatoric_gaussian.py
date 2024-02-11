@@ -5,12 +5,12 @@ from model import common
 
 
 def make_model(args):
-    return ALEATORIC(args)
+    return ALEATORIC_2HEADS(args)
 
 
-class ALEATORIC(nn.Module):
+class ALEATORIC_2HEADS(nn.Module):
     def __init__(self, config):
-        super(ALEATORIC, self).__init__()
+        super(ALEATORIC_2HEADS, self).__init__()
         self.drop_rate = config.drop_rate
         in_channels = config.in_channels
         filter_config = (64, 128)

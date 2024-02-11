@@ -22,14 +22,15 @@ parser.add_argument('--rgb_range', type=int, default=1)
 
 # Model
 parser.add_argument('--uncertainty', default='normal',
-                    choices=('normal', 'epistemic', 'aleatoric', 'combined'))
+                    choices=('normal', 'epistemic', 'combined',
+                             'aleatoric_gaussian', 'aleatoric_tstudent', 'aleatoric_laplacian'))
 parser.add_argument('--in_channels', type=int, default=1)
 parser.add_argument('--n_feats', type=int, default=32)
 parser.add_argument('--var_weight', type=float, default=1.)
 parser.add_argument('--drop_rate', type=float, default=0.2)
 
 # Train
-parser.add_argument("--epochs", type=int, default=200)
+parser.add_argument("--epochs", type=int, default=3) #200
 parser.add_argument("--lr", type=float, default=1e-3)
 parser.add_argument("--decay", type=str, default='50-100-150-200')
 parser.add_argument("--gamma", type=float, default=0.5)
