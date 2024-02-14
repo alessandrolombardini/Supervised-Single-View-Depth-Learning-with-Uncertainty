@@ -64,7 +64,6 @@ class Model(nn.Module):
         results = {'mean': mean, 'var': var_norm, 'v': v_norm}
         return results
 
-
     def test_epistemic(self, input, forward_func):
         means = []
         mean2s = []

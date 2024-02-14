@@ -31,7 +31,7 @@ parser.add_argument('--drop_rate', type=float, default=0.2)
 
 # Train
 parser.add_argument("--epochs", type=int, default=3) #200
-parser.add_argument("--lr", type=float, default=1e-3)
+parser.add_argument("--lr", type=float, default=1e-6)
 parser.add_argument("--decay", type=str, default='50-100-150-200')
 parser.add_argument("--gamma", type=float, default=0.5)
 parser.add_argument("--optimizer", type=str, default='rmsprop',
