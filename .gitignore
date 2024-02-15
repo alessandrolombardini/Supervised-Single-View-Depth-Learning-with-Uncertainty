@@ -8,3 +8,6 @@ WHAT_plan.md
 
 *.pyc
 *.xml
+
+
+**/model/**
