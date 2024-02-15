@@ -25,7 +25,7 @@ class Checkpoint:
 
         if config.exp_load is None:
         #    dir_fmt = '{}/{}_{}'.format(config.data_name, exp_type, now)
-            dir_fmt = '{}/{}_{}'.format(config.data_name, exp_type)
+            dir_fmt = '{}/{}'.format(config.data_name, exp_type)
         else:
             dir_fmt = '{}/{}_{}'.format(config.data_name, exp_type, self.exp_load)
 
