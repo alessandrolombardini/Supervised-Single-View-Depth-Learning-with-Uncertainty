@@ -69,13 +69,12 @@ class Operator:
                     current_global_step = self.ckpt.step()
                     self.summary_writer.add_scalar('train/loss',
                                                    loss, current_global_step)
-                    if batch_idx % 100 == 0:
-                        self.summary_writer.add_images("train/input_img",
-                                                    batch_input,
-                                                    current_global_step)
-                        self.summary_writer.add_images("train/mean_img",
-                                                    torch.clamp(batch_results['mean'], 0., 1.),
-                                                    current_global_step)
+                    self.summary_writer.add_images("train/input_img",
+                                                   batch_input,
+                                                   current_global_step)
+                    self.summary_writer.add_images("train/mean_img",
+                                                   torch.clamp(batch_results['mean'], 0., 1.),
+                                                   current_global_step)
 
             # use tensorboard
             if self.tensorboard:
@@ -127,16 +126,16 @@ class Operator:
                 # use tensorboard
                 if self.tensorboard:
                     step = self.ckpt.do_step_test()
-                    if batch_idx % 100 == 0:
-                        self.summary_writer.add_images("test/input_img",
-                                                    batch_input, 
-                                                    step)
-                        self.summary_writer.add_images("test/mean_img",
-                                                    torch.clamp(batch_results['mean'], 0., 1.),
-                                                    step)
-                        self.summary_writer.add_images("test/var_img",
-                                                    torch.clamp(batch_results['var'], 0., 1.),
-                                                    step)
+
+                    self.summary_writer.add_images("test/input_img",
+                                                   batch_input, 
+                                                   step)
+                    self.summary_writer.add_images("test/mean_img",
+                                                   torch.clamp(batch_results['mean'], 0., 1.),
+                                                   step)
+                    self.summary_writer.add_images("test/var_img",
+                                                   batch_results['var'] / torch.max(batch_results['var']),
+                                                   step)
                 
                 #if self.uncertainty != 'normal':
                 #    print("Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
