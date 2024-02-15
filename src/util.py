@@ -24,7 +24,8 @@ class Checkpoint:
         now = datetime.now().strftime('%m%d_%H%M')
 
         if config.exp_load is None:
-            dir_fmt = '{}/{}_{}'.format(config.data_name, exp_type, now)
+        #    dir_fmt = '{}/{}_{}'.format(config.data_name, exp_type, now)
+            dir_fmt = '{}/{}_{}'.format(config.data_name, exp_type)
         else:
             dir_fmt = '{}/{}_{}'.format(config.data_name, exp_type, self.exp_load)
 
