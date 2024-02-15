@@ -14,7 +14,9 @@ from torch.nn.modules.module import _addindent
 class Checkpoint:
     def __init__(self, config):
         self.global_step = 0
+        self.test_step = 0
         self.last_epoch = 0
+
         self.config = config
         self.exp_dir = config.exp_dir
         self.exp_load = config.exp_load
@@ -44,6 +46,10 @@ class Checkpoint:
     def step(self):
         self.global_step += 1
         return self.global_step
+    
+    def do_step_test(self):
+        self.test_step += 1
+        return self.test_step
 
     def save(self, epoch):
         self.last_epoch = epoch

@@ -7,6 +7,7 @@ import torchvision.transforms as transforms
 def get_dataloader(config):
     data_dir = config.data_dir
     batch_size = config.batch_size
+    num_work = config.num_work
 
     trans = transforms.Compose([transforms.ToTensor(),
                                 transforms.Normalize((0.0,), (1.0,))])
@@ -19,13 +20,14 @@ def get_dataloader(config):
         test_dataset = dset.FashionMNIST(root=data_dir, train=False, transform=trans, download=True)
 
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size,
-                              num_workers=config.num_work, shuffle=True)
+                              num_workers=num_work, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size,
-                             num_workers=config.num_work, shuffle=False)
+                             num_workers=num_work, shuffle=False)
 
-    print('==>>> total trainning batch number: {}'.format(len(train_loader)))
-    print('==>>> total testing batch number: {}'.format(len(test_loader)))
+    print('==>>> Total training batch number: {}'.format(len(train_loader)))
+    print('==>>> Total testing batch number: {}'.format(len(test_loader)))
 
-    data_loader = {'train': train_loader, 'test': test_loader}
+    data_loader = {'train': train_loader, 
+                   'test': test_loader}
 
     return data_loader

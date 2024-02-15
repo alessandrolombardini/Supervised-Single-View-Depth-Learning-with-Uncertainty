@@ -15,18 +15,18 @@ class Loss(nn.Module):
         if config.uncertainty == 'epistemic' or config.uncertainty == 'normal':
             module = import_module('loss.mse')
             loss_function = getattr(module, 'MSE')()
+        elif config.uncertainty == 'combined':
+            module = import_module('loss.gaussian')
+            loss_function = getattr(module, 'GAUSSIAN')()
         elif config.uncertainty == 'aleatoric_gaussian':
             module = import_module('loss.gaussian')
-            loss_function = getattr(module, 'GAUSSIAN')(
-                var_weight=config.var_weight)
+            loss_function = getattr(module, 'GAUSSIAN')()
         elif config.uncertainty == 'aleatoric_laplacian':
             module = import_module('loss.laplacian')
-            loss_function = getattr(module, 'LAPLACIAN')(
-                var_weight=config.var_weight)
+            loss_function = getattr(module, 'LAPLACIAN')()
         elif config.uncertainty == 'aleatoric_tstudent':
             module = import_module('loss.t_student')
-            loss_function = getattr(module, 'T_STUDENT')(
-                var_weight=config.var_weight)
+            loss_function = getattr(module, 'T_STUDENT')()
 
         self.losses.append({'function': loss_function})
 

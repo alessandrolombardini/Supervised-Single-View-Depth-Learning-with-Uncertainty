@@ -4,13 +4,11 @@ import torch.nn.functional as F
 
 
 class GAUSSIAN(nn.Module):
-    def __init__(self, var_weight):
+    def __init__(self):
         super(GAUSSIAN, self).__init__()
-        self.var_weight = var_weight
 
     def forward(self, results, label):
         mean, var = results['mean'], results['var']
-        var = self.var_weight * var
 
         loss1 = torch.mul(torch.exp(-var), (mean - label) ** 2)
         loss2 = var

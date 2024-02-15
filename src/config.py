@@ -16,7 +16,8 @@ parser.add_argument("--exp_load", type=str, default=None)
 
 # Data
 parser.add_argument("--data_dir", type=str, default="/mnt/sda")
-parser.add_argument("--data_name", type=str, default="fashion_mnist")
+parser.add_argument("--data_name", type=str, default="fashion_mnist", 
+                    choices=('fashion_mnist', 'mnist'))
 parser.add_argument('--batch_size', type=int, default=32)
 parser.add_argument('--rgb_range', type=int, default=1)
 
@@ -30,13 +31,13 @@ parser.add_argument('--var_weight', type=float, default=1.)
 parser.add_argument('--drop_rate', type=float, default=0.2)
 
 # Train
-parser.add_argument("--epochs", type=int, default=3) #200
-parser.add_argument("--lr", type=float, default=1e-6)
-parser.add_argument("--decay", type=str, default='50-100-150-200')
+parser.add_argument("--epochs", type=int, default=20) 
+parser.add_argument("--lr", type=float, default=1e-3)
+parser.add_argument("--decay", type=str, default='5-10-15-20')
 parser.add_argument("--gamma", type=float, default=0.5)
-parser.add_argument("--optimizer", type=str, default='rmsprop',
+parser.add_argument("--optimizer", type=str, default='adam',
                     choices=('sgd', 'adam', 'rmsprop'))
-parser.add_argument("--weight_decay", type=float, default=1e-4)
+parser.add_argument("--weight_decay", type=float, default=1e-3)
 parser.add_argument("--momentum", type=float, default=0.9)
 parser.add_argument("--betas", type=tuple, default=(0.9, 0.999))
 parser.add_argument("--epsilon", type=float, default=1e-8)

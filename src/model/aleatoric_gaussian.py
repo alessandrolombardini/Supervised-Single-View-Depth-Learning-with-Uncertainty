@@ -5,14 +5,15 @@ from model import common
 
 
 def make_model(args):
-    return ALEATORIC_2HEADS(args)
+    return ALEATORIC_GAUSSIAN(args)
 
 
-class ALEATORIC_2HEADS(nn.Module):
+class ALEATORIC_GAUSSIAN(nn.Module):
     def __init__(self, config):
-        super(ALEATORIC_2HEADS, self).__init__()
+        super(ALEATORIC_GAUSSIAN, self).__init__()
         self.drop_rate = config.drop_rate
         in_channels = config.in_channels
+        out_channels = 1
         filter_config = (64, 128)
 
         self.encoders = nn.ModuleList()
@@ -23,7 +24,7 @@ class ALEATORIC_2HEADS(nn.Module):
         encoder_n_layers = (2, 2, 3, 3, 3)
         encoder_filter_config = (in_channels,) + filter_config
         decoder_n_layers = (3, 3, 3, 2, 1)
-        decoder_filter_config = filter_config[::-1] + (filter_config[0],)
+        decoder_filter_config = filter_config[::-1] + (filter_config[0],) # 128,64,64
 
         for i in range(0, 2):
             # encoder architecture
@@ -42,8 +43,8 @@ class ALEATORIC_2HEADS(nn.Module):
                                               decoder_n_layers[i]))
 
         # final classifier (equivalent to a fully connected layer)
-        self.classifier_mean = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
-        self.classifier_var = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
+        self.classifier_mean = nn.Conv2d(filter_config[0], out_channels, 3, 1, 1)
+        self.classifier_var = nn.Conv2d(filter_config[0], out_channels, 3, 1, 1)
 
     def forward(self, x):
         indices = []
@@ -109,7 +110,6 @@ class _Decoder(nn.Module):
         n_in_feat (int): number of input features
         n_out_feat (int): number of output features
         n_blocks (int): number of conv-batch-relu block inside the decoder
-        drop_rate (float): dropout rate to use
     """
 
     def __init__(self, n_in_feat, n_out_feat, n_blocks=2):

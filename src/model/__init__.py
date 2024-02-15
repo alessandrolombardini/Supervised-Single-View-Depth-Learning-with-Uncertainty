@@ -34,35 +34,49 @@ class Model(nn.Module):
             elif self.uncertainty == 'combined':
                 return self.test_combined(input, forward_func)
             if self.uncertainty == 'aleatoric_gaussian':
-                return self.test_aleatoric_2heads(input, forward_func)
+                return self.test_aleatoric_gaussian(input, forward_func)
             if self.uncertainty == 'aleatoric_laplacian':
-                return self.test_aleatoric_2heads(input, forward_func)
+                return self.test_aleatoric_laplacian(input, forward_func)
             elif self.uncertainty == 'aleatoric_tstudent':
-                return self.test_aleatoric_3heads(input, forward_func)
+                return self.test_aleatoric_tstudent(input, forward_func)
             
-    def test_aleatoric_2heads(self, input, forward_func):
-        results = forward_func(input)
-        mean = results['mean']
-        var = torch.exp(results['var'])
-
-        var_norm = var / var.max()
-        results = {'mean': mean, 'var': var_norm}
-        return results
-    
-    def test_aleatoric_3heads(self, input, forward_func):
+    def test_aleatoric_gaussian(self, input, forward_func):
         results = forward_func(input)
         mean = results['mean']
         var = results['var']
+
+        var = torch.exp(var)
+        #var_norm = var / var.max() #?
+
+        return {'mean': mean, 'var': var}
+    
+    def test_aleatoric_laplacian(self, input, forward_func):
+        results = forward_func(input)
+        mean = results['mean']
+        scale = results['scale']
+
+        scale = torch.exp(scale)
+        #scale_norm = scale / scale.max() #?
+
+        var = 2 * scale ** 2
+        
+        return {'mean': mean, 'var': var}
+    
+    def test_aleatoric_tstudent(self, input, forward_func):
+        results = forward_func(input)
+        mean = results['mean']
+        t = results['t']
         v = results['v']
         
-        var = torch.exp(var)
+        t = torch.exp(t)
         v = torch.exp(v)
-        
-        var_norm = var / var.max()
-        v_norm = v / v.max()
 
-        results = {'mean': mean, 'var': var_norm, 'v': v_norm}
-        return results
+        #var_norm = var / var.max()
+        #v_norm = v / v.max()
+
+        var = (v * t ** 2) / (v - 2)
+        
+        return {'mean': mean, 'var': var}
 
     def test_epistemic(self, input, forward_func):
         means = []

@@ -4,13 +4,11 @@ import torch.nn.functional as F
 
 
 class LAPLACIAN(nn.Module):
-    def __init__(self, var_weight):
+    def __init__(self):
         super(LAPLACIAN, self).__init__()
-        self.var_weight = var_weight
 
     def forward(self, results, label):
-        mean, scale = results['mean'], results['var']
-        scale = self.var_weight * scale
+        mean, scale = results['mean'], results['scale']
         
         scale = torch.exp(scale)
         

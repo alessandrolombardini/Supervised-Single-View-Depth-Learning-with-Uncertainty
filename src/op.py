@@ -18,6 +18,8 @@ class Operator:
         self.tensorboard = config.tensorboard
         if self.tensorboard:
             self.summary_writer = SummaryWriter(self.ckpt.log_dir, 300)
+            print("Tensorboard is activated.")
+            print("Run tensorboard --logdir={}".format(self.ckpt.log_dir))
 
         # set model, criterion, optimizer
         self.model = Model(config)
@@ -37,14 +39,18 @@ class Operator:
 
     def train(self, data_loader):
         last_epoch = self.ckpt.last_epoch
-        train_batch_num = len(data_loader['train'])
+        train_batch_num = len(data_loader['test'])
+
 
         for epoch in range(last_epoch, self.epochs):
-            for batch_idx, batch_data in enumerate(data_loader['train']):
+            self.model.train()
+
+            for batch_idx, batch_data in enumerate(data_loader['test']):
+
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
                 batch_label = batch_label.to(self.config.device)
-
+                
                 # forward
                 batch_results = self.model(batch_input)
                 loss = self.criterion(batch_results, batch_input)
@@ -54,9 +60,9 @@ class Operator:
                 loss.backward()
                 self.optimizer.step()
                 print('Epoch: {:03d}/{:03d}, Iter: {:03d}/{:03d}, Loss: {:5f}'
-                      .format(epoch, self.config.epochs,
-                              batch_idx, train_batch_num,
-                              loss.item()))
+                    .format(epoch, self.config.epochs,
+                            batch_idx, train_batch_num,
+                            loss.item()))
 
                 # use tensorboard
                 if self.tensorboard:
@@ -80,7 +86,6 @@ class Operator:
             self.optimizer.schedule()
             self.save(self.ckpt, epoch)
             self.test(data_loader)
-            self.model.train()
 
         self.summary_writer.close()
 
@@ -99,6 +104,7 @@ class Operator:
                 total_ause = 0.
 
             for batch_idx, batch_data in enumerate(data_loader['test']):
+                
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
                 batch_label = batch_label.to(self.config.device)
@@ -110,35 +116,45 @@ class Operator:
                 ## Calculate PSNR
                 current_psnr = compute_psnr(batch_results['mean'], batch_input)
                 psnrs.append(current_psnr)
-                total_psnr = sum(psnrs) / len(psnrs)
+                total_psnr += current_psnr
                 ## AUSE
                 if self.uncertainty != "normal":
                     current_ause = compute_ause(batch_input, batch_results)
                     auses.append(current_ause)
-                    total_ause = total_ause + current_ause
+                    total_ause += current_ause
 
+                # use tensorboard
+                if self.tensorboard:
+                    step = self.ckpt.do_step_test()
+
+                    self.summary_writer.add_images("test/input_img",
+                                                   batch_input, 
+                                                   step)
+                    self.summary_writer.add_images("test/mean_img",
+                                                   torch.clamp(batch_results['mean'], 0., 1.),
+                                                   step)
+                    self.summary_writer.add_images("test/var_img",
+                                                   torch.clamp(batch_results['var'], 0., 1.),
+                                                   step)
                 
                 if self.uncertainty != 'normal':
                     print("Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
-                        batch_idx, test_batch_num, auses[batch_idx], psnrs[batch_idx]))
+                        batch_idx, test_batch_num, current_ause, current_psnr))
                 else:
                     print("Test: Iter: {:03d}/{:03d}, PSNR {:5f}".format(
-                        batch_idx, test_batch_num, psnrs[batch_idx]))
+                        batch_idx, test_batch_num, current_psnr))
                     
-                
+            print("[FINAL] Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
+                batch_idx, test_batch_num, total_ause/len(auses), total_psnr/len(psnrs)))
+        
 
             # use tensorboard
             if self.tensorboard:
-                self.summary_writer.add_scalar('test/psnr',
-                                               total_psnr, self.ckpt.last_epoch)
-                self.summary_writer.add_images("test/input_img",
-                                               batch_input, self.ckpt.last_epoch)
-                self.summary_writer.add_images("test/mean_img",
-                                               torch.clamp(batch_results['mean'], 0., 1.),
-                                               self.ckpt.last_epoch)
+                self.summary_writer.add_scalar('test/mean_psnr',
+                                            total_psnr/len(psnrs), self.ckpt.last_epoch)
                 if not self.uncertainty == 'normal':
-                    self.summary_writer.add_images("test/var_img",
-                                                   batch_results['var'],
+                    self.summary_writer.add_scalar('test/mean_ause',
+                                                   total_ause/len(auses), 
                                                    self.ckpt.last_epoch)
 
     def load(self, ckpt):

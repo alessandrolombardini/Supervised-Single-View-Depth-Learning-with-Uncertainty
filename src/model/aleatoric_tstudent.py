@@ -1,26 +1,26 @@
 import torch.nn as nn
 import torch.nn.functional as F
 import scipy
+import torch
 
 from model import common
 
 
 def make_model(args):
-    return ALEATORIC_3HEADS(args)
-
-
-class ALEATORIC_3HEADS(nn.Module):
+    return ALEATORIC_TSTUDENT(args)
+    
+class ALEATORIC_TSTUDENT(nn.Module):
     def __init__(self, config):
-        super(ALEATORIC_3HEADS, self).__init__()
+        super(ALEATORIC_TSTUDENT, self).__init__()
         self.drop_rate = config.drop_rate
         in_channels = config.in_channels
         filter_config = (64, 128)
 
         self.encoders = nn.ModuleList()
         self.decoders_mean = nn.ModuleList()
-        self.decoders_var = nn.ModuleList()
+        self.decoders_t = nn.ModuleList()
         self.decoders_v = nn.ModuleList()
-
+  
         # setup number of conv-bn-relu blocks per module and number of filters
         encoder_n_layers = (2, 2, 3, 3, 3)
         encoder_filter_config = (in_channels,) + filter_config
@@ -39,9 +39,9 @@ class ALEATORIC_3HEADS(nn.Module):
                                                decoder_n_layers[i]))
 
             # decoder architecture
-            self.decoders_var.append(_Decoder(decoder_filter_config[i],
-                                              decoder_filter_config[i + 1],
-                                              decoder_n_layers[i]))
+            self.decoders_t.append(_Decoder(decoder_filter_config[i],
+                                                decoder_filter_config[i + 1],
+                                                decoder_n_layers[i]))
             
             # decoder architecture
             self.decoders_v.append(_Decoder(decoder_filter_config[i],
@@ -50,8 +50,9 @@ class ALEATORIC_3HEADS(nn.Module):
 
         # final classifier (equivalent to a fully connected layer)
         self.classifier_mean = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
-        self.classifier_var = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
+        self.classifier_t = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
         self.classifier_v = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
+
 
     def forward(self, x):
         indices = []
@@ -67,23 +68,23 @@ class ALEATORIC_3HEADS(nn.Module):
             unpool_sizes.append(size)
 
         feat_mean = feat
-        feat_var = feat
+        feat_t = feat
         feat_v = feat
         # decoder path, upsampling with corresponding indices and size
         for i in range(0, 2):
             feat_mean = self.decoders_mean[i](feat_mean, indices[1 - i], unpool_sizes[1 - i])
-            feat_var = self.decoders_var[i](feat_var, indices[1 - i], unpool_sizes[1 - i])
+            feat_t = self.decoders_t[i](feat_t, indices[1 - i], unpool_sizes[1 - i])
             feat_v = self.decoders_v[i](feat_v, indices[1 - i], unpool_sizes[1 - i])
-            if i == 0:
+            if i == 0:  
                 feat_mean = F.dropout(feat_mean, p=self.drop_rate)
-                feat_var = F.dropout(feat_var, p=self.drop_rate)
+                feat_t = F.dropout(feat_t, p=self.drop_rate)
                 feat_v = F.dropout(feat_v, p=self.drop_rate)
 
         output_mean = self.classifier_mean(feat_mean)
-        output_var = self.classifier_var(feat_var)
+        output_t = self.classifier_t(feat_t)
         output_v = self.classifier_v(feat_v)
-
-        results = {'mean': output_mean, 'var': output_var, 'v': output_v}
+        
+        results = {'mean': output_mean, 't': output_t, 'v': output_v}
         return results
 
 

@@ -4,26 +4,27 @@ import torch.nn.functional as F
 
 
 class T_STUDENT(nn.Module):
-    def __init__(self, var_weight):
+    def __init__(self):
         super(T_STUDENT, self).__init__()
-        self.var_weight = var_weight
 
     def forward(self, results, label):
-        mean, var, v = results['mean'], results['var'], results['v']
+        mean, t, v = results['mean'], results['t'], results['v']
 
-        n = results['mean'][0].numel() 
-
-        var = torch.exp(var)
+        t = torch.exp(t)
         v = torch.exp(v)
 
-        #var = self.var_weight * var
-
-        loss = -(- n * 0.5 * torch.log(torch.tensor(torch.pi)) \
-               + n * torch.lgamma((v + 1) * 0.5) \
-               - n * torch.lgamma(v * 0.5) \
-               - n * 0.5 * torch.log(v) \
-               - n * torch.log(var) \
-               - (v + 1) * 0.5 * torch.log(1 + ((label - mean) ** 2) / (v * var**2)))
+        loss = - torch.lgamma((v + 1) * 0.5) \
+               + torch.lgamma(v * 0.5) \
+               + 0.5 * torch.log(torch.tensor(torch.pi)) * v \
+               + torch.log(t) \
+               + 0.5 * (v + 1) * torch.log(1 + ((label - mean) ** 2) / (v * t**2))
+        
+        #loss = - torch.lgamma((v + 1) * 0.5) \
+        #        + torch.lgamma(v * 0.5) \
+        #        + 0.5 * torch.log(v * torch.tensor(torch.pi)) \
+        #        + 0.5 * torch.log(torch.tensor(torch.pi)) \
+        #        + 0.5 * torch.log(t) \
+        #        + 0.5 * (v + 1) * torch.log(1 + ((label - mean) ** 2) / (v * t**2))
         
         return loss.mean()
 
