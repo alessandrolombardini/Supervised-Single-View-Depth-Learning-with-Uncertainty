@@ -118,10 +118,10 @@ class Operator:
                 psnrs.append(current_psnr)
                 total_psnr += current_psnr
                 ## AUSE
-                if self.uncertainty != "normal":
-                    current_ause = compute_ause(batch_input, batch_results)
-                    auses.append(current_ause)
-                    total_ause += current_ause
+                #if self.uncertainty != "normal":
+                #    current_ause = compute_ause(batch_input, batch_results)
+                #    auses.append(current_ause)
+                #    total_ause += current_ause
 
                 # use tensorboard
                 if self.tensorboard:
@@ -137,25 +137,27 @@ class Operator:
                                                    torch.clamp(batch_results['var'], 0., 1.),
                                                    step)
                 
-                if self.uncertainty != 'normal':
-                    print("Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
-                        batch_idx, test_batch_num, current_ause, current_psnr))
-                else:
-                    print("Test: Iter: {:03d}/{:03d}, PSNR {:5f}".format(
-                        batch_idx, test_batch_num, current_psnr))
+                #if self.uncertainty != 'normal':
+                #    print("Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
+                #        batch_idx, test_batch_num, current_ause, current_psnr))
+                #else:
+                #    print("Test: Iter: {:03d}/{:03d}, PSNR {:5f}".format(
+                #        batch_idx, test_batch_num, current_psnr))
                     
-            print("[FINAL] Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
-                batch_idx, test_batch_num, total_ause/len(auses), total_psnr/len(psnrs)))
+            #print("[FINAL] Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
+            #    batch_idx, test_batch_num, total_ause/len(auses), total_psnr/len(psnrs)))
+            print("[FINAL] Test: Iter: {:03d}/{:03d}, PSNR {:5f}".format(
+                batch_idx, test_batch_num, total_psnr/len(psnrs)))
         
 
             # use tensorboard
             if self.tensorboard:
                 self.summary_writer.add_scalar('test/mean_psnr',
                                             total_psnr/len(psnrs), self.ckpt.last_epoch)
-                if not self.uncertainty == 'normal':
-                    self.summary_writer.add_scalar('test/mean_ause',
-                                                   total_ause/len(auses), 
-                                                   self.ckpt.last_epoch)
+                #if not self.uncertainty == 'normal':
+                #    self.summary_writer.add_scalar('test/mean_ause',
+                #                                   total_ause/len(auses), 
+                #                                   self.ckpt.last_epoch)
 
     def load(self, ckpt):
         ckpt.load() # load ckpt
