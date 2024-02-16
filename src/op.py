@@ -113,7 +113,7 @@ class Operator:
 
                 # Metrices 
                 ## Calculate PSNR
-                current_psnr = compute_psnr(batch_results['mean'], batch_input)
+                current_psnr = compute_psnr(batch_input, batch_results['mean'])
                 psnrs.append(current_psnr)
                 total_psnr += current_psnr
                 # AUSE
