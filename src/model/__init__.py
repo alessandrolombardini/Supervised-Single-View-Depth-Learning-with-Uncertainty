@@ -45,22 +45,25 @@ class Model(nn.Module):
         mean = results['mean']
         var = results['var']
 
+        # Compute variance
         var = torch.exp(var)
         #var_norm = var / var.max() #?
 
-        return {'mean': mean, 'var': var}
+        new_results = {'mean': mean, 'var': var}
+        return new_results
     
     def test_aleatoric_laplacian(self, input, forward_func):
         results = forward_func(input)
         mean = results['mean']
         scale = results['scale']
 
+        # Compute variance
         scale = torch.exp(scale)
         #scale_norm = scale / scale.max() #?
-
         var = 2 * scale ** 2
-        
-        return {'mean': mean, 'var': var}
+
+        new_results = {'mean': mean, 'var': var}
+        return new_results
     
     def test_aleatoric_tstudent(self, input, forward_func):
         results = forward_func(input)
@@ -68,15 +71,15 @@ class Model(nn.Module):
         t = results['t']
         v = results['v']
         
+        # Compute variance
         t = torch.exp(t)
         v = torch.exp(v)
-
         #var_norm = var / var.max()
         #v_norm = v / v.max()
-
         var = (v * t ** 2) / (v - 2)
         
-        return {'mean': mean, 'var': var}
+        new_results = {'mean': mean, 'var': var}
+        return new_results
 
     def test_epistemic(self, input, forward_func):
         means = []
