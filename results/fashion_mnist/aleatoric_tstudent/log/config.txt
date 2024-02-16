@@ -119,5 +119,6 @@ Model(
     (classifier_mean): Conv2d(64, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)), [92m577[0m params
     (classifier_t): Conv2d(64, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)), [92m577[0m params
     (classifier_v): Conv2d(64, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)), [92m577[0m params
+    (filter_v): Reduction(), [92m0[0m params
   ), [92m1,149,123[0m params
 ), [92m1,149,123[0m params
