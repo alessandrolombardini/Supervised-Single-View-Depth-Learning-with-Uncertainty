@@ -39,13 +39,13 @@ class Operator:
 
     def train(self, data_loader):
         last_epoch = self.ckpt.last_epoch
-        train_batch_num = len(data_loader['train'])
+        train_batch_num = len(data_loader['test'])
 
 
         for epoch in range(last_epoch, self.epochs):
             self.model.train()
 
-            for batch_idx, batch_data in enumerate(data_loader['train']):
+            for batch_idx, batch_data in enumerate(data_loader['test']):
 
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
