@@ -88,8 +88,7 @@ def compute_ause(input_batch, result_batch):
     """Compute the Area Under the Sparsification Error (AUSE)."""
     ause = []
     input_batch = input_batch.cpu()
-    result_batch = result_batch.cpu()
-    
+    result_batch = {k: v.cpu() for k, v in result_batch.items()}
     for instance_id in range(input_batch.shape[0]):
         input_instance = input_batch[instance_id][0]
         mean_result = result_batch['mean'][instance_id][0]
