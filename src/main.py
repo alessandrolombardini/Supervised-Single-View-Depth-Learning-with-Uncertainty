@@ -20,12 +20,18 @@ def main(config):
     else:
         operator.test(data_loader)
 
+def get_available_gpu():
+    for i in range(torch.cuda.device_count()):
+        if torch.cuda.is_available(i):
+            return i
+    raise Exception('No GPU available!')
+
 if __name__ == "__main__":
     # Get configuration
     config = get_config()
     # Device setting
-    config.device = torch.device('cuda:{}'.format(config.gpu)
-                                 if torch.cuda.is_available() else 'cpu')
+    config.gpu = get_available_gpu()
+    config.device = torch.device('cuda:{}'.format(config.gpu))
     print("==>>> Device: ", config.device)
     # Main
     main(config)
