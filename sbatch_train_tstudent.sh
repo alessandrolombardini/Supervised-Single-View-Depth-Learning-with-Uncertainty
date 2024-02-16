@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=training
+#SBATCH --job-name=training_tstudent
 #SBATCH -N 1
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-cpu=20G
