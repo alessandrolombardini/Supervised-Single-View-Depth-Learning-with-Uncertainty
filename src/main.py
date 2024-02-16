@@ -21,8 +21,9 @@ def main(config):
         operator.test(data_loader)
 
 def get_available_gpu():
+    print('Device count:', torch.cuda.device_count())
     for i in range(torch.cuda.device_count()):
-        if torch.cuda.is_available(i):
+        if torch.cuda.is_available():
             return i
     raise Exception('No GPU available!')
 
