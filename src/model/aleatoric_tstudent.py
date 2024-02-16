@@ -14,7 +14,7 @@ class CustomReLU(nn.Module):
         super(CustomReLU, self).__init__()
 
     def forward(self, x):
-        return torch.where(x <= 0, torch.tensor(2.0).to(x.device), x)
+        return torch.max(x, torch.tensor(2.0).to(x.device))
     
 class ALEATORIC_TSTUDENT(nn.Module):
     def __init__(self, config):
