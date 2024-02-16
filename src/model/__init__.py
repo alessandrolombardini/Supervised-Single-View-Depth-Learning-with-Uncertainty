@@ -29,16 +29,14 @@ class Model(nn.Module):
             forward_func = self.model.forward
             if self.uncertainty == 'normal':
                 return forward_func(input)
-            elif self.uncertainty == 'epistemic':
-                return self.test_epistemic(input, forward_func)
-            elif self.uncertainty == 'combined':
-                return self.test_combined(input, forward_func)
-            if self.uncertainty == 'aleatoric_gaussian':
+            elif self.uncertainty == 'aleatoric_gaussian':
                 return self.test_aleatoric_gaussian(input, forward_func)
-            if self.uncertainty == 'aleatoric_laplacian':
+            elif self.uncertainty == 'aleatoric_laplacian':
                 return self.test_aleatoric_laplacian(input, forward_func)
             elif self.uncertainty == 'aleatoric_tstudent':
                 return self.test_aleatoric_tstudent(input, forward_func)
+            else:
+                raise Exception('Not implemented')
             
     def test_aleatoric_gaussian(self, input, forward_func):
         results = forward_func(input)
@@ -80,47 +78,6 @@ class Model(nn.Module):
         
         new_results = {'mean': mean, 'var': var}
         return new_results
-
-    def test_epistemic(self, input, forward_func):
-        means = []
-        mean2s = []
-
-        for i_sample in range(self.n_samples):
-            results = forward_func(input)
-            mean = results['mean']
-            means.append(mean ** 2)
-            mean2s.append(mean)
-
-        means_ = torch.stack(means, dim=0).mean(dim=0)
-        mean2s_ = torch.stack(mean2s, dim=0).mean(dim=0)
-
-        var = means_ - mean2s_ ** 2
-        var_norm = var / var.max()
-        results = {'mean': mean2s_, 'var': var_norm}
-        return results
-
-    def test_combined(self, input, forward_func):
-        means = []
-        mean2s = []
-        var1s = []
-
-        for i_sample in range(self.n_samples):
-            results = forward_func(input)
-            mean = results['mean']
-            means.append(mean ** 2)
-            mean2s.append(mean)
-            var = results['var']
-            var1s.append(torch.exp(var))
-
-        means_ = torch.stack(means, dim=0).mean(dim=0)
-        mean2s_ = torch.stack(mean2s, dim=0).mean(dim=0)
-
-        var1s_ = torch.stack(var1s, dim=0).mean(dim=0)
-        var2 = means_ - mean2s_ ** 2
-        var_ = var1s_ + var2
-        var_norm = var_ / var_.max()
-        results = {'mean': mean2s_, 'var': var_norm}
-        return results
 
     def save(self, ckpt, epoch):
         save_dirs = [os.path.join(ckpt.model_dir, 'model_latest.pt')]
