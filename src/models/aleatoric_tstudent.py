@@ -1,10 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
-import scipy
 import torch
-
-from model import common
-
 
 def make_model(args):
     return ALEATORIC_TSTUDENT(args)

@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 from importlib import import_module
 
@@ -12,22 +11,21 @@ class Loss(nn.Module):
         self.losses = []
         self.loss_module = nn.ModuleList()
 
-        if config.uncertainty == 'epistemic' or config.uncertainty == 'normal':
-            module = import_module('loss.mse')
+        if config.uncertainty == 'normal':
+            module = import_module('losses.mse')
             loss_function = getattr(module, 'MSE')()
-        elif config.uncertainty == 'combined':
-            module = import_module('loss.gaussian')
-            loss_function = getattr(module, 'GAUSSIAN')()
         elif config.uncertainty == 'aleatoric_gaussian':
-            module = import_module('loss.gaussian')
+            module = import_module('losses.gaussian')
             loss_function = getattr(module, 'GAUSSIAN')()
         elif config.uncertainty == 'aleatoric_laplacian':
-            module = import_module('loss.laplacian')
+            module = import_module('losses.laplacian')
             loss_function = getattr(module, 'LAPLACIAN')()
         elif config.uncertainty == 'aleatoric_tstudent':
-            module = import_module('loss.t_student')
+            module = import_module('losses.t_student')
             loss_function = getattr(module, 'T_STUDENT')()
-
+        else:
+            raise Exception('Not implemented')
+        
         self.losses.append({'function': loss_function})
 
         self.loss_module.to(config.device)

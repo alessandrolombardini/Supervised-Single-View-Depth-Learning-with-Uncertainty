@@ -1,5 +1,4 @@
 import os
-import math
 import sys
 import numpy as np
 from datetime import datetime
