@@ -31,7 +31,7 @@ class Loss(nn.Module):
         self.losses.append({'function': loss_function})
 
         self.loss_module.to(config.device)
-        if not config.cpu and config.num_gpu > 1:
+        if config.device != 'cpu' and config.num_gpu > 1:
             self.loss_module = nn.DataParallel(
                 self.loss_module, range(self.num_gpu))
 
