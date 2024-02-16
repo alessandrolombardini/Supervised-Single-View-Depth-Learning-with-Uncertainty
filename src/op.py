@@ -43,7 +43,6 @@ class Operator:
 
         for epoch in range(last_epoch, self.epochs):
             self.model.train()
-            self.test(data_loader, epoch)
             for batch_idx, batch_data in enumerate(data_loader['test']):
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
@@ -93,6 +92,7 @@ class Operator:
 
 
     def test(self, data_loader, epoch):
+        print('Executing test...')
         with torch.no_grad():
             self.model.eval()
 
@@ -123,12 +123,12 @@ class Operator:
                     auses.append(current_ause)
                     total_ause += current_ause
                
-                #if self.uncertainty != 'normal':
-                #    print("Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
-                #        batch_idx, test_batch_num, current_ause, current_psnr))
-                #else:
-                #    print("Test: Iter: {:03d}/{:03d}, PSNR {:5f}".format(
-                #        batch_idx, test_batch_num, current_psnr))
+                if self.uncertainty != 'normal':
+                    print("Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
+                        batch_idx, test_batch_num, current_ause, current_psnr))
+                else:
+                    print("Test: Iter: {:03d}/{:03d}, PSNR {:5f}".format(
+                        batch_idx, test_batch_num, current_psnr))
                     
 
             if self.tensorboard:
