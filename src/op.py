@@ -39,11 +39,9 @@ class Operator:
 
     def train(self, data_loader):
         last_epoch = self.ckpt.last_epoch
-        train_batch_num = len(data_loader['test'])
-
         for epoch in range(last_epoch, self.epochs):
             self.model.train()
-            for batch_idx, batch_data in enumerate(data_loader['test']):
+            for batch_idx, batch_data in enumerate(data_loader['train']):
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
                 batch_label = batch_label.to(self.config.device)
@@ -56,35 +54,26 @@ class Operator:
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
-                print('Epoch: {:03d}/{:03d}, Iter: {:03d}/{:03d}, Loss: {:5f}'
-                    .format(epoch, self.config.epochs,
-                            batch_idx, train_batch_num,
-                            loss.item()))
-
-                # use tensorboard
-                if self.tensorboard:
-                    current_global_step = self.ckpt.step()
-                    self.summary_writer.add_scalar('train/loss',
-                                                   loss, 
-                                                   current_global_step)
-                
+            
+            # Feedback
+            print('Epoch: {:03d}/{:03d}, Loss: {:5f}'.format(epoch, self.config.epochs, loss.item()))
             if self.tensorboard:
+                current_global_step = self.ckpt.step()
+                self.summary_writer.add_scalar('train/loss',
+                                                loss, 
+                                                epoch)
                 self.summary_writer.add_images("train/input_img",
                                                 batch_input,
                                                 epoch)
                 self.summary_writer.add_images("train/mean_img",
                                                 torch.clamp(batch_results['mean'], 0., 1.),
                                                 epoch)
+                self.summary_writer.add_scalar('train/lr',
+                                               self.optimizer.get_lr(), epoch)
 
-            # use tensorboard
-            #if self.tensorboard:
-            #    #print(self.optimizer.get_lr(), epoch)
-            #    self.summary_writer.add_scalar('epoch_lr',
-            #                                   self.optimizer.get_lr(), epoch)
-
-            # test model & save model
+            # Test model & save model
             self.optimizer.schedule()
-            #self.save(self.ckpt, epoch)
+            self.save(self.ckpt, epoch)
             self.test(data_loader, epoch)
 
         self.summary_writer.close()
@@ -92,19 +81,16 @@ class Operator:
 
 
     def test(self, data_loader, epoch):
-        print('Executing test...')
         with torch.no_grad():
             self.model.eval()
 
-            total_psnr = 0.
+            # Measures
+            auses = []
             psnrs = []
-            test_batch_num = len(data_loader['test'])
+            total_psnr = 0.
+            total_ause = 0.
 
-            if self.uncertainty != 'normal':
-                auses = []
-                total_ause = 0.
-
-            for batch_idx, batch_data in enumerate(data_loader['test']):
+            for _, batch_data in enumerate(data_loader['test']):
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
                 batch_label = batch_label.to(self.config.device)
@@ -123,16 +109,13 @@ class Operator:
                     auses.append(current_ause)
                     total_ause += current_ause
                
-                if self.uncertainty != 'normal':
-                    print("Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
-                        batch_idx, test_batch_num, current_ause, current_psnr))
-                else:
-                    print("Test: Iter: {:03d}/{:03d}, PSNR {:5f}".format(
-                        batch_idx, test_batch_num, current_psnr))
-                    
-
+            
+            
+            # Feedback
+            print('Epoch: {:03d}/{:03d}, , AUSE {:5f}, PSNR {:5f}'.format(epoch, self.config.epochs, 
+                                                                          total_ause/len(auses) if self.uncertainty != "normal" else 'x', 
+                                                                          total_psnr/len(psnrs)))
             if self.tensorboard:
-                #step = self.ckpt.do_step_test()
                 self.summary_writer.add_images("test/input_img",
                                                 batch_input, 
                                                 epoch)
@@ -140,23 +123,14 @@ class Operator:
                                                 torch.clamp(batch_results['mean'], 0., 1.),
                                                 epoch)
                 self.summary_writer.add_images("test/var_img",
-                                            torch.clamp(batch_results['var'], 0., 1.),
-                                            epoch)
-
-            print("[FINAL] Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(
-                    batch_idx, test_batch_num, total_ause/len(auses), total_psnr/len(psnrs)))
-            print("[FINAL] Test: Iter: {:03d}/{:03d}, PSNR {:5f}".format(
-                    batch_idx, test_batch_num, total_psnr/len(psnrs)))
-        
-
-            # use tensorboard
-            if self.tensorboard:
+                                               torch.clamp(batch_results['var'], 0., 1.), #?
+                                               epoch)
                 self.summary_writer.add_scalar('test/mean_psnr',
-                                            total_psnr/len(psnrs), self.ckpt.last_epoch)
-                if not self.uncertainty == 'normal':
+                                                total_psnr/len(psnrs), epoch)
+                if self.uncertainty != 'normal':
                     self.summary_writer.add_scalar('test/mean_ause',
-                                                   total_ause/len(auses), 
-                                                   self.ckpt.last_epoch)
+                                                    total_ause/len(auses), 
+                                                    epoch)
 
     def load(self, ckpt):
         ckpt.load() # load ckpt
