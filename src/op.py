@@ -43,6 +43,7 @@ class Operator:
 
         for epoch in range(last_epoch, self.epochs):
             self.model.train()
+            self.test(data_loader, epoch)
             for batch_idx, batch_data in enumerate(data_loader['test']):
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
