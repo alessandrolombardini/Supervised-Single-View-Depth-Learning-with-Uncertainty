@@ -11,8 +11,10 @@ class LAPLACIAN(nn.Module):
         mean, scale = results['mean'], results['scale']
         
         scale = torch.exp(scale)
-        
-        loss = torch.log(2*scale) + torch.abs(mean - label)/scale
-        return loss.mean()
 
+        #loss = torch.log(2*scale) + torch.abs(mean - label)/scale
+        #return loss.mean()
+
+        loss = torch.norm(mean - label, p=1) / (2 * scale) + 0.5 * torch.log(scale)
+        return loss.sum()
   
