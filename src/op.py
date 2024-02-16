@@ -20,16 +20,13 @@ class Operator:
             self.summary_writer = SummaryWriter(self.ckpt.log_dir, 300)
             print("Tensorboard is activated.")
             print("Run tensorboard --logdir={}".format(self.ckpt.log_dir))
-
-        # set model, criterion, optimizer
+        # Set model, criterion, optimizer
         self.model = Model(config)
-        summary(self.model, config_file=self.ckpt.config_file)
-
-        # set criterion, optimizer
         self.criterion = Loss(config)
         self.optimizer = make_optimizer(config, self.model)
-
-        # load ckpt, model, optimizer
+        # Summary
+        summary(self.model, config_file=self.ckpt.config_file)
+        # Load ckpt, model, optimizer
         if self.ckpt.exp_load is not None or not config.is_train:
             print("Loading model... ")
             self.load(self.ckpt)
@@ -41,22 +38,19 @@ class Operator:
         last_epoch = self.ckpt.last_epoch
         for epoch in range(last_epoch, self.epochs):
             self.model.train()
-            for batch_idx, batch_data in enumerate(data_loader['train']):
+            for _, batch_data in enumerate(data_loader['train']):
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
                 batch_label = batch_label.to(self.config.device)
-                
-                # forward
+                # Forward
                 batch_results = self.model(batch_input)
                 loss = self.criterion(batch_results, batch_input)
-
-                # backward
+                # Backward
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
-            
             # Feedback
-            print('Epoch: {:03d}/{:03d}, Loss: {:5f}'.format(epoch, self.config.epochs, loss.item()))
+            print('[Epoch: {:03d}/{:03d}] Loss: {:5f}'.format(epoch, self.config.epochs, loss.item()))
             if self.tensorboard:
                 current_global_step = self.ckpt.step()
                 self.summary_writer.add_scalar('train/loss',
@@ -70,36 +64,30 @@ class Operator:
                                                 epoch)
                 self.summary_writer.add_scalar('train/lr',
                                                self.optimizer.get_lr(), epoch)
-
             # Test model & save model
             self.optimizer.schedule()
             self.save(self.ckpt, epoch)
-            self.test(data_loader, epoch)
-
+            if epoch % 10 == 0: 
+                self.test(data_loader, epoch)
         self.summary_writer.close()
 
 
 
     def test(self, data_loader, epoch):
+        auses = []
+        psnrs = []
+        total_psnr = 0.
+        total_ause = 0.
         with torch.no_grad():
             self.model.eval()
-
-            # Measures
-            auses = []
-            psnrs = []
-            total_psnr = 0.
-            total_ause = 0.
-
             for _, batch_data in enumerate(data_loader['test']):
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
                 batch_label = batch_label.to(self.config.device)
-
                 # Forward
                 batch_results = self.model(batch_input)
-
                 # Metrices 
-                ## Calculate PSNR
+                ## PSNR
                 current_psnr = compute_psnr(batch_input, batch_results['mean'])
                 psnrs.append(current_psnr)
                 total_psnr += current_psnr
@@ -108,13 +96,10 @@ class Operator:
                     current_ause = compute_ause(batch_input, batch_results)
                     auses.append(current_ause)
                     total_ause += current_ause
-               
-            
-            
             # Feedback
-            print('Epoch: {:03d}/{:03d}, , AUSE {:5f}, PSNR {:5f}'.format(epoch, self.config.epochs, 
-                                                                          total_ause/len(auses) if self.uncertainty != "normal" else 'x', 
-                                                                          total_psnr/len(psnrs)))
+            print('[Epoch: {:03d}/{:03d}] AUSE {:5f}, PSNR {:5f}'.format(epoch, self.config.epochs, 
+                                                                         total_ause/len(auses) if self.uncertainty != "normal" else 'x', 
+                                                                         total_psnr/len(psnrs)))
             if self.tensorboard:
                 self.summary_writer.add_images("test/input_img",
                                                 batch_input, 
@@ -132,14 +117,18 @@ class Operator:
                                                     total_ause/len(auses), 
                                                     epoch)
 
+
+
     def load(self, ckpt):
-        ckpt.load() # load ckpt
-        self.model.load(ckpt) # load model
+        ckpt.load()               # load ckpt
+        self.model.load(ckpt)     # load model
         self.optimizer.load(ckpt) # load optimizer
 
+
+
     def save(self, ckpt, epoch):
-        ckpt.save(epoch) # save ckpt: global_step, last_epoch
+        ckpt.save(epoch)             # save ckpt: global_step, last_epoch
         self.model.save(ckpt, epoch) # save model: weight
-        self.optimizer.save(ckpt) # save optimizer:
+        self.optimizer.save(ckpt)    # save optimizer:
 
 

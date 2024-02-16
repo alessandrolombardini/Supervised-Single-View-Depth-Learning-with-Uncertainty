@@ -24,9 +24,6 @@ def get_dataloader(config):
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size,
                              num_workers=num_work, shuffle=False)
 
-    print('==>>> Total training batch number: {}'.format(len(train_loader)))
-    print('==>>> Total testing batch number: {}'.format(len(test_loader)))
-
     data_loader = {'train': train_loader, 
                    'test': test_loader}
 
