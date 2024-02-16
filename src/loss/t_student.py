@@ -26,5 +26,5 @@ class T_STUDENT(nn.Module):
         #        + 0.5 * torch.log(t) \
         #        + 0.5 * (v + 1) * torch.log(1 + ((label - mean) ** 2) / (v * t**2))
         
-        return loss.mean()
+        return loss.sum()
 

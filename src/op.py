@@ -41,12 +41,11 @@ class Operator:
         last_epoch = self.ckpt.last_epoch
         train_batch_num = len(data_loader['test'])
 
-
         for epoch in range(last_epoch, self.epochs):
             self.model.train()
-
             for batch_idx, batch_data in enumerate(data_loader['test']):
-
+                if (batch_idx + 1) % 3 == 0:
+                    break
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
                 batch_label = batch_label.to(self.config.device)
@@ -69,13 +68,12 @@ class Operator:
                     current_global_step = self.ckpt.step()
                     self.summary_writer.add_scalar('train/loss',
                                                    loss, current_global_step)
-                    if batch_idx % 100:
-                        self.summary_writer.add_images("train/input_img",
-                                                    batch_input,
-                                                    current_global_step)
-                        self.summary_writer.add_images("train/mean_img",
-                                                    torch.clamp(batch_results['mean'], 0., 1.),
-                                                    current_global_step)
+                    self.summary_writer.add_images("train/input_img",
+                                                batch_input,
+                                                current_global_step)
+                    self.summary_writer.add_images("train/mean_img",
+                                                torch.clamp(batch_results['mean'], 0., 1.),
+                                                current_global_step)
 
             # use tensorboard
             if self.tensorboard:
@@ -106,6 +104,9 @@ class Operator:
 
             for batch_idx, batch_data in enumerate(data_loader['test']):
                 
+                if (batch_idx + 1) % 3 == 0:
+                    break
+                
                 batch_input, batch_label = batch_data
                 batch_input = batch_input.to(self.config.device)
                 batch_label = batch_label.to(self.config.device)
@@ -127,16 +128,45 @@ class Operator:
                 # use tensorboard
                 if self.tensorboard:
                     step = self.ckpt.do_step_test()
-                    if batch_idx % 100:
-                        self.summary_writer.add_images("test/input_img",
+                    self.summary_writer.add_images("test/input_img",
                                                     batch_input, 
                                                     step)
-                        self.summary_writer.add_images("test/mean_img",
-                                                    torch.clamp(batch_results['mean'], 0., 1.),
-                                                    step)
-                        self.summary_writer.add_images("test/var_img",
-                                                    batch_results['var'] / torch.max(batch_results['var']),
-                                                    step)
+                    self.summary_writer.add_images("test/mean_img",
+                                                torch.clamp(batch_results['mean'], 0., 1.),
+                                                step)
+                    print('Max ', torch.max(batch_results['var'])) 
+                    print('Min ', torch.min(batch_results['var'])) 
+                    print('Mean ', torch.mean(batch_results['var'])) 
+                    
+                    #print('Max normalization ', torch.max(batch_results['var'] / torch.max(batch_results['var'])))
+                    #print('Min normalization ', torch.min(batch_results['var'] / torch.max(batch_results['var'])))
+                    #print('Mean normalization ', torch.mean(batch_results['var'] / torch.max(batch_results['var'])))
+
+                    def map_batch_to_01_torch(batch_tensor):
+                        """
+                        Map all values in a batch of PyTorch tensors to the range [0, 1].
+
+                        Parameters:
+                            batch_tensor (torch.Tensor): The input batch tensor to be mapped.
+
+                        Returns:
+                            torch.Tensor: The mapped batch tensor.
+                        """
+                        min_vals, _ = torch.min(batch_tensor.view(batch_tensor.size(0), -1), dim=1)
+                        max_vals, _ = torch.max(batch_tensor.view(batch_tensor.size(0), -1), dim=1)
+
+                        # Handle cases where min and max values are the same
+                        min_vals = torch.where(min_vals == max_vals, torch.zeros_like(min_vals), min_vals)
+                        max_vals = torch.where(min_vals == max_vals, torch.ones_like(max_vals), max_vals)
+
+                        min_vals = min_vals.view(-1, 1, 1, 1)
+                        max_vals = max_vals.view(-1, 1, 1, 1)
+
+                        return (batch_tensor - min_vals) / (max_vals - min_vals)
+                    
+                    self.summary_writer.add_images("test/var_img",
+                                                   map_batch_to_01_torch(batch_results['var']),
+                                                   step)
                 
                 #if self.uncertainty != 'normal':
                 #    print("Test: Iter: {:03d}/{:03d}, AUSE {:5f}, PSNR {:5f}".format(

@@ -9,12 +9,11 @@ from model import common
 def make_model(args):
     return ALEATORIC_TSTUDENT(args)
     
-class CustomReLU(nn.Module):
+class Reduction(nn.Module):
     def __init__(self):
-        super(CustomReLU, self).__init__()
-
+        super(Reduction, self).__init__()
     def forward(self, x):
-        return torch.max(x, torch.tensor(2.0).to(x.device))
+        return 5 * torch.sigmoid(x) + 2
     
 class ALEATORIC_TSTUDENT(nn.Module):
     def __init__(self, config):
@@ -60,9 +59,8 @@ class ALEATORIC_TSTUDENT(nn.Module):
         self.classifier_t = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
         self.classifier_v = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
 
+        self.filter_v = Reduction()
 
-        self.filter_t = nn.ReLU()
-        self.filter_v = CustomReLU()
 
 
     def forward(self, x):
@@ -95,7 +93,6 @@ class ALEATORIC_TSTUDENT(nn.Module):
         output_t = self.classifier_t(feat_t)
         output_v = self.classifier_v(feat_v)
 
-        output_t = self.filter_t(output_t)
         output_v = self.filter_v(output_v)
         
         results = {'mean': output_mean, 't': output_t, 'v': output_v}
