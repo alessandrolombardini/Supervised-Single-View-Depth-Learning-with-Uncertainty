@@ -64,7 +64,7 @@ class Checkpoint:
         self.last_epoch = load_ckpt['last_epoch']
 
 
-def compute_psnr(output, label, rgb_range=1.):
+def compute_psnr(label, output, rgb_range=1.):
     if label.nelement() == 1: return 0
     diff = (output - label) / rgb_range
     mse = diff.pow(2).mean()
@@ -87,6 +87,9 @@ def sparsification(input_instance, pred_instance, uncertainty):
 def compute_ause(input_batch, result_batch):
     """Compute the Area Under the Sparsification Error (AUSE)."""
     ause = []
+    input_batch = input_batch.cpu()
+    result_batch = result_batch.cpu()
+    
     for instance_id in range(input_batch.shape[0]):
         input_instance = input_batch[instance_id][0]
         mean_result = result_batch['mean'][instance_id][0]
