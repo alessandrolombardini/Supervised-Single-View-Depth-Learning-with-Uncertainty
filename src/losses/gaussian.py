@@ -13,7 +13,9 @@ class GAUSSIAN(nn.Module):
         loss1 = torch.mul(torch.exp(-var), (mean - label) ** 2)
         loss2 = var
         loss = .5 * (loss1 + loss2)
-        return loss.mean()
+        return loss.sum()
+
+        #return loss.mean()
 
         #loss = (mean - label)**2 / (2 * var) + .5 * torch.log(var)
         #return loss.sum()
