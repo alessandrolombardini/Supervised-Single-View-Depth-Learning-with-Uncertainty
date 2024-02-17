@@ -29,11 +29,11 @@ class Model(nn.Module):
             forward_func = self.model.forward
             if self.uncertainty == 'normal':
                 return forward_func(input)
-            elif self.uncertainty == 'aleatoric_gaussian':
+            elif self.uncertainty == 'aleatoric.gaussian':
                 return self.test_aleatoric_gaussian(input, forward_func)
-            elif self.uncertainty == 'aleatoric_laplacian':
+            elif self.uncertainty == 'aleatoric.laplacian':
                 return self.test_aleatoric_laplacian(input, forward_func)
-            elif self.uncertainty == 'aleatoric_tstudent':
+            elif self.uncertainty == 'aleatoric.tstudent':
                 return self.test_aleatoric_tstudent(input, forward_func)
             else:
                 raise Exception('Not implemented')

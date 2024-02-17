@@ -2,6 +2,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
+from models.aleatoric.modules.encoder import Encoder
+from models.aleatoric.modules.decoder import Decoder
+
 def make_model(args):
     return ALEATORIC_TSTUDENT(args)
     
@@ -31,22 +34,22 @@ class ALEATORIC_TSTUDENT(nn.Module):
 
         for i in range(0, 2):
             # encoder architecture
-            self.encoders.append(_Encoder(encoder_filter_config[i],
+            self.encoders.append(Encoder(encoder_filter_config[i],
                                           encoder_filter_config[i + 1],
                                           encoder_n_layers[i]))
 
             # decoder architecture
-            self.decoders_mean.append(_Decoder(decoder_filter_config[i],
+            self.decoders_mean.append(Decoder(decoder_filter_config[i],
                                                decoder_filter_config[i + 1],
                                                decoder_n_layers[i]))
 
             # decoder architecture
-            self.decoders_t.append(_Decoder(decoder_filter_config[i],
+            self.decoders_t.append(Decoder(decoder_filter_config[i],
                                                 decoder_filter_config[i + 1],
                                                 decoder_n_layers[i]))
             
             # decoder architecture
-            self.decoders_v.append(_Decoder(decoder_filter_config[i],
+            self.decoders_v.append(Decoder(decoder_filter_config[i],
                                               decoder_filter_config[i + 1],
                                               decoder_n_layers[i]))
 
@@ -95,57 +98,4 @@ class ALEATORIC_TSTUDENT(nn.Module):
         return results
 
 
-class _Encoder(nn.Module):
-    def __init__(self, n_in_feat, n_out_feat, n_blocks=2):
-        """Encoder layer follows VGG rules + keeps pooling indices
-        Args:
-            n_in_feat (int): number of input features
-            n_out_feat (int): number of output features
-            n_blocks (int): number of conv-batch-relu block inside the encoder
-            drop_rate (float): dropout rate to use
-        """
-        super(_Encoder, self).__init__()
 
-        layers = [nn.Conv2d(n_in_feat, n_out_feat, 3, 1, 1),
-                  nn.BatchNorm2d(n_out_feat),
-                  nn.ReLU()]
-
-        if n_blocks > 1:
-            layers += [nn.Conv2d(n_out_feat, n_out_feat, 3, 1, 1),
-                       nn.BatchNorm2d(n_out_feat),
-                       nn.ReLU()]
-
-        self.features = nn.Sequential(*layers)
-
-    def forward(self, x):
-        output = self.features(x)
-        return F.max_pool2d(output, 2, 2, return_indices=True), output.size()
-
-
-class _Decoder(nn.Module):
-    """Decoder layer decodes the features by unpooling with respect to
-    the pooling indices of the corresponding decoder part.
-    Args:
-        n_in_feat (int): number of input features
-        n_out_feat (int): number of output features
-        n_blocks (int): number of conv-batch-relu block inside the decoder
-        drop_rate (float): dropout rate to use
-    """
-
-    def __init__(self, n_in_feat, n_out_feat, n_blocks=2):
-        super(_Decoder, self).__init__()
-
-        layers = [nn.Conv2d(n_in_feat, n_in_feat, 3, 1, 1),
-                  nn.BatchNorm2d(n_in_feat),
-                  nn.ReLU()]
-
-        if n_blocks > 1:
-            layers += [nn.Conv2d(n_in_feat, n_out_feat, 3, 1, 1),
-                       nn.BatchNorm2d(n_out_feat),
-                       nn.ReLU()]
-
-        self.features = nn.Sequential(*layers)
-
-    def forward(self, x, indices, size):
-        unpooled = F.max_unpool2d(x, indices, 2, 2, 0, size)
-        return self.features(unpooled)

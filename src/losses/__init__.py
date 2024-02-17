@@ -14,13 +14,13 @@ class Loss(nn.Module):
         if config.uncertainty == 'normal':
             module = import_module('losses.mse')
             loss_function = getattr(module, 'MSE')()
-        elif config.uncertainty == 'aleatoric_gaussian':
+        elif config.uncertainty == 'aleatoric.gaussian':
             module = import_module('losses.gaussian')
             loss_function = getattr(module, 'GAUSSIAN')()
-        elif config.uncertainty == 'aleatoric_laplacian':
+        elif config.uncertainty == 'aleatoric.laplacian':
             module = import_module('losses.laplacian')
             loss_function = getattr(module, 'LAPLACIAN')()
-        elif config.uncertainty == 'aleatoric_tstudent':
+        elif config.uncertainty == 'aleatoric.tstudent':
             module = import_module('losses.t_student')
             loss_function = getattr(module, 'T_STUDENT')()
         else:

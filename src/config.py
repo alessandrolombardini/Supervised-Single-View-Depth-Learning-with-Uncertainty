@@ -19,9 +19,8 @@ parser.add_argument('--batch_size', type=int, default=32)
 parser.add_argument('--rgb_range', type=int, default=1)         # !
 
 # Model
-parser.add_argument('--uncertainty', default='normal', choices=('normal', 'epistemic', 'combined',
-                                                                'aleatoric_gaussian', 'aleatoric_tstudent', 
-                                                                'aleatoric_laplacian'))
+parser.add_argument('--uncertainty', default='normal', choices=('normal', 'aleatoric.gaussian', 'aleatoric.tstudent', 
+                                                                'aleatoric.laplacian'))
 parser.add_argument('--n_feats', type=int, default=32)
 parser.add_argument('--var_weight', type=float, default=1.)
 parser.add_argument('--drop_rate', type=float, default=0.2)
