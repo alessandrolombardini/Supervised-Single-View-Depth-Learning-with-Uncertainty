@@ -103,9 +103,9 @@ class Operator:
                     auses.append(current_ause)
                     total_ause += current_ause
                     # AUCE
-                    current_auce = compute_auce(batch_input, batch_results)
-                    auces.append(current_auce)
-                    total_auce += current_auce
+                    #current_auce = compute_auce(batch_input, batch_results)
+                    #auces.append(current_auce)
+                    #total_auce += current_auce
             # Feedback
             print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}, AUSE {:5f}, AUCE {:5f}'
                   .format(epoch, self.config.epochs, label.upper(),
@@ -134,9 +134,9 @@ class Operator:
                     self.summary_writer.add_scalar('eval/{}/mean_ause'.format(label),
                                                     total_ause/len(auses), 
                                                     epoch)
-                    self.summary_writer.add_scalar('eval/{}/mean_auce'.format(label),
-                                                    total_auce/len(auces), 
-                                                    epoch)
+                    #self.summary_writer.add_scalar('eval/{}/mean_auce'.format(label),
+                    #                                total_auce/len(auces), 
+                    #                                epoch)
 
 
 
