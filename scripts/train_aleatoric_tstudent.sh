@@ -3,8 +3,8 @@ if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/resul
     rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric_tstudent.out
 fi
 # Log slurm
-if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_laplacian.out" ]; then
-    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_laplacian.out
+if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_tstudent.out" ]; then
+    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_tstudent.out
 fi
 # Checkpoint
 if [ -d "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric_tstudent" ]; then
