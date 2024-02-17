@@ -49,7 +49,6 @@ class Operator:
             # Feedback
             print('[Epoch: {:03d}/{:03d}] Loss: {:5f}'.format(epoch, self.config.epochs, loss.item()))
             if self.tensorboard:
-                current_global_step = self.ckpt.step()
                 self.summary_writer.add_scalar('train/loss',
                                                 loss, 
                                                 epoch)
