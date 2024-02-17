@@ -4,10 +4,10 @@ if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/resul
     rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.tstudent.out
 fi
 # Log slurm
-if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training.tstudent.out" ]; then
-    echo "Deleting results/slurms/T-training_tstudent.out..."
-    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training.tstudent.out
-fi
+#if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training.tstudent.out" ]; then
+#    echo "Deleting results/slurms/T-training_tstudent.out..."
+#    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training.tstudent.out
+#fi
 # Checkpoint
 if [ -d "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.tstudent" ]; then
     echo "Deleting results/checkpoints/aleatoric.tstudent..."
