@@ -1,7 +1,9 @@
 from torch.utils.tensorboard import SummaryWriter
 from models import *
 from losses import Loss
-from util import make_optimizer, compute_psnr, compute_ause, summary
+from utils.optimizer import make_optimizer
+from utils.metrics import compute_psnr, compute_rmse, compute_ause, compute_auce
+from utils.summary import summary
 
 
 class Operator:
@@ -70,10 +72,14 @@ class Operator:
 
 
     def test(self, data_loader, label, epoch):
-        auses = []
         psnrs = []
+        rmses = []
+        auses = []
+        auces = []
         total_psnr = 0.
+        total_rmse = 0. 
         total_ause = 0.
+        total_auce = 0.
         with torch.no_grad():
             self.model.eval()
             for _, batch_data in enumerate(data_loader[label]):
@@ -84,18 +90,29 @@ class Operator:
                 batch_results = self.model(batch_input)
                 # Metrices 
                 ## PSNR
-                current_psnr = compute_psnr(batch_input, batch_results['mean'])
+                current_psnr = compute_psnr(batch_input, batch_results)
                 psnrs.append(current_psnr)
                 total_psnr += current_psnr
-                # AUSE
+                # RMSE
+                current_rmse = compute_rmse(batch_input, batch_results)
+                rmses.append(current_rmse)
+                total_rmse += current_rmse
                 if self.uncertainty != "normal":
+                    # AUSE  
                     current_ause = compute_ause(batch_input, batch_results)
                     auses.append(current_ause)
                     total_ause += current_ause
+                    # AUCE
+                    current_auce = compute_auce(batch_input, batch_results)
+                    auces.append(current_auce)
+                    total_auce += current_auce
             # Feedback
-            print('[Epoch: {:03d}/{:03d}][{}] AUSE {:5f}, PSNR {:5f}'.format(epoch, self.config.epochs, label.upper(),
-                                                                             total_ause/len(auses) if self.uncertainty != "normal" else 'x', 
-                                                                             total_psnr/len(psnrs)))
+            print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}, AUSE {:5f}, AUCE {:5f}'
+                  .format(epoch, self.config.epochs, label.upper(),
+                          total_psnr/len(psnrs),
+                          total_rmse/len(rmses),
+                          total_ause/len(auses) if self.uncertainty != "normal" else 'x', 
+                          total_auce/len(auces)))
             if self.tensorboard:
                 if label == 'test':
                     self.summary_writer.add_images("eval/test/input_img",
@@ -110,9 +127,15 @@ class Operator:
                 self.summary_writer.add_scalar('eval/{}/mean_psnr'.format(label),
                                                 total_psnr/len(psnrs), 
                                                 epoch)
+                self.summary_writer.add_scalar('eval/{}/mean_rmse'.format(label),
+                                                total_rmse/len(rmses), 
+                                                epoch)
                 if self.uncertainty != 'normal':
                     self.summary_writer.add_scalar('eval/{}/mean_ause'.format(label),
                                                     total_ause/len(auses), 
+                                                    epoch)
+                    self.summary_writer.add_scalar('eval/{}/mean_auce'.format(label),
+                                                    total_auce/len(auces), 
                                                     epoch)
 
 

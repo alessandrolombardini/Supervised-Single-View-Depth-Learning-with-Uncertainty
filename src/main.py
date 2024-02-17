@@ -3,7 +3,7 @@ import torch
 from config import get_config
 from data import get_dataloader
 from op import Operator
-from util import Checkpoint
+from utils.checkpoint import Checkpoint
 
 
 def main(config):
