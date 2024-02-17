@@ -3,7 +3,7 @@ path = /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results
 if [ -e "$path" ]; then
     rm -rf "$path"
 # Log slurm
-path = /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/aleatoric_gaussian.out
+path = /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_gaussian.out
 if [ -e "$path" ]; then
     rm -rf "$path"
 # Checkpoint
