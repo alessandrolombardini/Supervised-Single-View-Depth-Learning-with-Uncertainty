@@ -1,15 +1,15 @@
 # Log script
 path = /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric_tstudent.out
-if [ -e "$path" ]; then
-    rm -rf "$path"
+if [ -f "$path" ]; then
+    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric_tstudent.out
 # Log slurm
 path = /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_laplacian.out
-if [ -e "$path" ]; then
-    rm -rf "$path"
+if [ -f "$path" ]; then
+    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_laplacian.out
 # Checkpoint
 path = /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric_tstudent
-if [ -e "$path" ]; then
-    rm -rf "$path"cd  /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/src
+if [ -d "$path" ]; then
+    rm -rf /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric_tstudent
 
 pip3 install --upgrade pip
 pip3 install -r requirements.txt
