@@ -30,21 +30,18 @@ def compute_ause(input_batch, result_batch):
         mean_result = result_batch['mean'][instance_id][0]
         var_result = result_batch['var'][instance_id][0]
         # Compute sparsification curves for the predicted depth map
-        error = (input_instance - mean_result).pow(2) # RMSE -> SE (without mean and root)
         # Sparsification
-        def sparsification(input_instance, pred_instance, uncertainty):
-            error = (input_instance - pred_instance).pow(2) # RMSE -> SE (without mean and root)
+        def sparsification(error, uncertainty):
             x, y = np.unravel_index(np.argsort(uncertainty, axis=None), uncertainty.shape)
             ranking = np.stack((x, y), axis=1)
             sparsification = []
             for x, y in ranking:
                 sparsification.append(error[x][y])
             return np.array(sparsification)    
-        sparsification_prediction = sparsification(input_instance,
-                                                   mean_result,
+        error = (input_instance - mean_result).pow(2) # RMSE -> SE (without mean and root)
+        sparsification_prediction = sparsification(error,
                                                    var_result)
-        sparsification_oracle = sparsification(input_instance, 
-                                               mean_result, 
+        sparsification_oracle = sparsification(error, 
                                                error)
         # Calculate the error difference between the sparsification curves
         sparsification_errors = sparsification_oracle - sparsification_prediction
@@ -73,7 +70,7 @@ def compute_auce(input_batch, result_batch):
             upper_bounds = mean_pred + pos_bound
             counter.append(np.sum((input_instance <= upper_bounds) * (input_instance >= lower_bounds)))
         counter = np.array(counter) - np.array(range(0, 1, 100))
-        auces.append(np.trapz(np.abs(counter), np.arange(counter.shape[0]))) # Va bene np.arange? (se uso 0,1,2.. o 0.1, 0.2, cambia l'area?)
+        auces.append(np.trapz(np.abs(counter), np.arange(0, 0.99, 0.01))) 
     return np.array(auces).mean()
 
 
