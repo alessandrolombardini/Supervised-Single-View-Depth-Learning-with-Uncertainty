@@ -111,7 +111,7 @@ class Operator:
                           total_psnr/len(psnrs),
                           total_rmse/len(rmses),
                           total_ause/len(auses) if self.uncertainty != "normal" else 'x', 
-                          total_auce/len(auces)))
+                          total_auce/len(auces) if self.uncertainty != "normal" else 'x'))
             if self.tensorboard:
                 if label == 'test':
                     self.summary_writer.add_images("eval/test/input_img",
