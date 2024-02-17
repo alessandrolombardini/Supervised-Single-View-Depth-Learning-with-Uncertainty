@@ -4,10 +4,10 @@ if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/resul
     rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.gaussian.out
 fi
 # Log slurm
-if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_gaussian.out" ]; then
-    echo "Deleting results/slurms/T-training_gaussian.out..."
-    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_gaussian.out
-fi
+#if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_gaussian.out" ]; then
+#    echo "Deleting results/slurms/T-training_gaussian.out..."
+#    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_gaussian.out
+#fi
 # Checkpoint
 if [ -d "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.gaussian" ]; then
     echo "Deleting results/checkpoints/aleatoric.gaussian..."
