@@ -1,5 +1,4 @@
 import torch
-
 from config import get_config
 from data import get_dataloader
 from op import Operator
