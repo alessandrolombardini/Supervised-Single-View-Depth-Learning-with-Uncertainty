@@ -46,10 +46,10 @@ def summary(model, config_file, file=sys.stdout):
         return main_str, total_params
 
     string, count = repr(model)
-    print(string, file=open(config_file, 'a'))
+    #print(string, file=open(config_file, 'a'))
 
     if file is not None:
-        print(string, file=sys.stdout)
+        #print(string, file=sys.stdout)
         file.flush()
 
     return count
