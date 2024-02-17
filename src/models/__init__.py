@@ -1,9 +1,9 @@
 import os
-from importlib import import_module
-
 import torch
 import torch.nn as nn
 import torch.nn.parallel as P
+from importlib import import_module
+
 
 
 class Model(nn.Module):
@@ -15,7 +15,7 @@ class Model(nn.Module):
         self.num_gpu = config.num_gpu
         self.uncertainty = config.uncertainty
         self.n_samples = config.n_samples
-        module = import_module('model.' + config.uncertainty)
+        module = import_module('models.' + config.uncertainty)
         self.model = module.make_model(config).to(config.device)
 
     def forward(self, input):
