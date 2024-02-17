@@ -9,7 +9,6 @@ class T_STUDENT(nn.Module):
 
     def forward(self, results, label):
         mean, t, v = results['mean'], results['t'], results['v']
-
         t = torch.exp(t)
         v = torch.exp(v)
 
@@ -25,7 +24,6 @@ class T_STUDENT(nn.Module):
                + 0.5 * torch.log(torch.tensor(torch.pi)) * v \
                + torch.log(t) \
                + 0.5 * (v + 1) * torch.log(1 + ((label - mean) ** 2) / (v * t**2))
-        
         
         return loss.sum()
 

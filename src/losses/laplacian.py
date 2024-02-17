@@ -9,7 +9,6 @@ class LAPLACIAN(nn.Module):
 
     def forward(self, results, label):
         mean, scale = results['mean'], results['scale']
-        
         scale = torch.exp(scale)
 
         #loss = torch.log(2*scale) + torch.abs(mean - label)/scale
