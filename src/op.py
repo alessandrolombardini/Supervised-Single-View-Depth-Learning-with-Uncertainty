@@ -106,12 +106,19 @@ class Operator:
                     #auces.append(current_auce)
                     #total_auce += current_auce
             # Feedback
-            print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}, AUSE {:5f}, AUCE {:5f}'
-                  .format(epoch, self.config.epochs, label.upper(),
-                          total_psnr/len(psnrs),
-                          total_rmse/len(rmses),
-                          total_ause/len(auses) if self.uncertainty != "normal" else 'x'))
-                          #total_auce/len(auces) if self.uncertainty != "normal" else 'x'))
+            if self.uncertainty != "normal":
+                print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}, AUSE {:5f}, AUCE {:5f}'
+                    .format(epoch, self.config.epochs, label.upper(),
+                            total_psnr/len(psnrs),
+                            total_rmse/len(rmses),
+                            total_ause/len(auses) if self.uncertainty != "normal" else 'x'))
+                            #total_auce/len(auces) if self.uncertainty != "normal" else 'x'))
+            else:
+                print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}'
+                    .format(epoch, self.config.epochs, label.upper(),
+                            total_psnr/len(psnrs),
+                            total_rmse/len(rmses)))
+                
             if self.tensorboard:
                 if label == 'test':
                     self.summary_writer.add_images("eval/test/input_img",
