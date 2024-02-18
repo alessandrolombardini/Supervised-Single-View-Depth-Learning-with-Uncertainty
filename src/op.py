@@ -107,12 +107,17 @@ class Operator:
                     #total_auce += current_auce
             # Feedback
             if self.uncertainty != "normal":
-                print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}, AUSE {:5f}, AUCE {:5f}'
+                #print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}, AUSE {:5f}, AUCE {:5f}'
+                #    .format(epoch, self.config.epochs, label.upper(),
+                #            total_psnr/len(psnrs),
+                #            total_rmse/len(rmses),
+                #            total_ause/len(auses) if self.uncertainty != "normal" else 'x',
+                #            total_auce/len(auces) if self.uncertainty != "normal" else 'x'))
+                print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}, AUSE {:5f}'
                     .format(epoch, self.config.epochs, label.upper(),
                             total_psnr/len(psnrs),
                             total_rmse/len(rmses),
-                            total_ause/len(auses) if self.uncertainty != "normal" else 'x'))
-                            #total_auce/len(auces) if self.uncertainty != "normal" else 'x'))
+                            total_auce/len(auces) if self.uncertainty != "normal" else 'x'))
             else:
                 print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}'
                     .format(epoch, self.config.epochs, label.upper(),
@@ -124,12 +129,13 @@ class Operator:
                     self.summary_writer.add_images("eval/test/input_img",
                                                     batch_input, 
                                                     epoch)
-                    self.summary_writer.add_images("eval/test/mean_img",
-                                                    torch.clamp(batch_results['mean'], 0., 1.),
+                    if self.uncertainty != 'normal':
+                        self.summary_writer.add_images("eval/test/mean_img",
+                                                        torch.clamp(batch_results['mean'], 0., 1.),
+                                                        epoch)
+                        self.summary_writer.add_images("eval/test/var_img",
+                                                    torch.clamp(batch_results['var'], 0., 1.), #?
                                                     epoch)
-                    self.summary_writer.add_images("eval/test/var_img",
-                                                   torch.clamp(batch_results['var'], 0., 1.), #?
-                                                   epoch)
                 self.summary_writer.add_scalar('eval/{}/mean_psnr'.format(label),
                                                 total_psnr/len(psnrs), 
                                                 epoch)
