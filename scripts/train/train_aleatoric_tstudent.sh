@@ -1,8 +1,8 @@
 # Log script
-if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.tstudent.out" ]; then
-    echo "Deleting results/log/aleatoric.tstudent.out..."
-    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.tstudent.out
-fi
+#if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.tstudent.out" ]; then
+#    echo "Deleting results/log/aleatoric.tstudent.out..."
+#    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.tstudent.out
+#fi
 # Log slurm
 #if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training.tstudent.out" ]; then
 #    echo "Deleting results/slurms/T-training_tstudent.out..."

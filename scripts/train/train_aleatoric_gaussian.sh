@@ -1,8 +1,8 @@
 # Log script
-if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.gaussian.out" ]; then
-    echo "Deleting results/log/aleatoric.gaussian.out..."
-    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.gaussian.out
-fi
+#if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.gaussian.out" ]; then
+#    echo "Deleting results/log/aleatoric.gaussian.out..."
+#    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/log/aleatoric.gaussian.out
+#fi
 # Log slurm
 #if [ -f "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_gaussian.out" ]; then
 #    echo "Deleting results/slurms/T-training_gaussian.out..."

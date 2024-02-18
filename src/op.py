@@ -117,7 +117,7 @@ class Operator:
                     .format(epoch, self.config.epochs, label.upper(),
                             total_psnr/len(psnrs),
                             total_rmse/len(rmses),
-                            total_auce/len(auces) if self.uncertainty != "normal" else 'x'))
+                            total_ause/len(auses) if self.uncertainty != "normal" else 'x'))
             else:
                 print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}'
                     .format(epoch, self.config.epochs, label.upper(),
