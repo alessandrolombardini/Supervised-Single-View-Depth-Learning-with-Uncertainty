@@ -25,7 +25,8 @@ def compute_ause(input_batch, result_batch):
     input_batch = input_batch.cpu().numpy()
     result_batch = {k: v.cpu().numpy() for k, v in result_batch.items()}
     
-    ause = []
+    auses = []
+
     num_elems = input_batch[0][0].size
     perc = 1/num_elems
     y = [perc * i  for i in range(num_elems)]
@@ -53,8 +54,9 @@ def compute_ause(input_batch, result_batch):
             sum_oracle_means -= sparsification_oracle[i]
         # Compute the AUSE by integrating the absolute values of the error differences
         sparsification_errors = np.abs(np.array(sparsification_oracle_means) - np.array(sparsification_errors_means))
-        ause = np.trapz(sparsification_errors, y)
-    return ause.mean()
+        auses.append(np.trapz(sparsification_errors, y))
+
+    return auses.mean()
 
 
 def compute_auce(input_batch, result_batch):
