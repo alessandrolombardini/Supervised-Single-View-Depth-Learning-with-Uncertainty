@@ -27,9 +27,9 @@ parser.add_argument('--drop_rate', type=float, default=0.2)
 parser.add_argument('--in_channels', type=int, default=1)       # !
 
 # Train
-parser.add_argument("--epochs", type=int, default=50) 
+parser.add_argument("--epochs", type=int, default=200) 
 parser.add_argument("--lr", type=float, default=1e-3)
-parser.add_argument("--decay", type=str, default='10-20-30-40')
+parser.add_argument("--decay", type=str, default='50-100-150')
 parser.add_argument("--gamma", type=float, default=0.5)
 parser.add_argument("--optimizer", type=str, default='adam', choices=('sgd', 'adam', 'rmsprop'))
 parser.add_argument("--weight_decay", type=float, default=1e-3)

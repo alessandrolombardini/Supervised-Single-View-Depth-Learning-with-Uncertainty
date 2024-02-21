@@ -73,7 +73,7 @@ class Operator:
                 else:
                     psnr, rmse = self.test(data_loader, 'test', epoch)
 
-                if best_rmse is None or rmse < best_rmse:
+                if best_ause is None or ause < best_ause:
                     best_psnr = psnr
                     best_rmse = rmse
                     if self.uncertainty != "normal":
