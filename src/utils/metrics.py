@@ -55,7 +55,7 @@ def compute_ause(input_batch, result_batch):
         sparsification_errors = np.abs(np.array(sparsification_oracle_means) - np.array(sparsification_errors_means))
         auses.append(np.trapz(sparsification_errors, y))
 
-    return auses.mean()
+    return np.array(auses).mean()
 
 
 def compute_auce(input_batch, result_batch):
