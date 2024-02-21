@@ -63,7 +63,7 @@ class Operator:
             # Test model & save model
             self.optimizer.schedule()
             self.save(self.ckpt, epoch)
-            if (epoch + 1) % 10 == 0: 
+            if (epoch + 1) % 5 == 0: 
                 self.test(data_loader, 'train', epoch)
                 self.test(data_loader, 'test', epoch)
         self.summary_writer.close()
