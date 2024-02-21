@@ -79,7 +79,10 @@ class Operator:
                     if self.uncertainty != "normal":
                         best_ause = ause
 
-        print("Best PSNR: {:5f}, Best RMSE: {:5f}, Best AUSE: {:5f}".format(best_psnr, best_rmse, best_ause))
+        if self.config.unvertainty != "normal":
+            print("Best PSNR: {:5f}, Best RMSE: {:5f}, Best AUSE: {:5f}".format(best_psnr, best_rmse, best_ause))
+        else:
+            print("Best PSNR: {:5f}, Best RMSE: {:5f}".format(best_psnr, best_rmse))
         self.summary_writer.close()
 
 
