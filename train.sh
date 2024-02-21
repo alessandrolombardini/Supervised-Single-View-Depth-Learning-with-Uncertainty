@@ -16,9 +16,9 @@ sleep 300
 echo "Training Normal - FASHION MNIST"  >> output.txt
 sbatch scripts/sbatch_train_normal_fashion_mnist.sh &
 sleep 300
-echo "Training Laplacian - FASHION MNIST"  >> output.txt
-sbatch scripts/sbatch_train_laplacian_fashion_mnist.sh &
-sleep 300
+#echo "Training Laplacian - FASHION MNIST"  >> output.txt
+#sbatch scripts/sbatch_train_laplacian_fashion_mnist.sh &
+#sleep 300
 
 #echo "Training Laplacian - CIFAR10"  >> output.txt
 #sbatch scripts/sbatch_train_laplacian_cifar10.sh &
