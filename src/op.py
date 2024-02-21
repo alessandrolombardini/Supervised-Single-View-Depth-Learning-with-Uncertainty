@@ -33,6 +33,9 @@ class Operator:
 
     def train(self, data_loader):
         last_epoch = self.ckpt.last_epoch
+        best_psnr = None
+        best_rmse = None
+        best_ause = None
         for epoch in range(last_epoch, self.epochs):
             self.model.train()
             for _, batch_data in enumerate(data_loader['train']):
@@ -64,8 +67,14 @@ class Operator:
             self.optimizer.schedule()
             self.save(self.ckpt, epoch)
             if (epoch + 1) % 5 == 0: 
-                self.test(data_loader, 'train', epoch)
-                self.test(data_loader, 'test', epoch)
+                _,_,_ = self.test(data_loader, 'train', epoch)
+                psnr, rmse, ause = self.test(data_loader, 'test', epoch)
+                if rmse < best_rmse:
+                    best_psnr = psnr
+                    best_rmse = rmse
+                    best_ause = ause
+
+        print("Best PSNR: {:5f}, Best RMSE: {:5f}, Best AUSE: {:5f}".format(best_psnr, best_rmse, best_ause))
         self.summary_writer.close()
 
 
@@ -150,6 +159,7 @@ class Operator:
                     #                                total_auce/len(auces), 
                     #                                epoch)
 
+        return total_psnr/len(psnrs), total_rmse/len(rmses), total_ause/len(auses) #, total_auce/len(auces)
 
 
     def load(self, ckpt):

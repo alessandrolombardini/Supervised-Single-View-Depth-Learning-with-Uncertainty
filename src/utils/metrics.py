@@ -30,7 +30,6 @@ def compute_ause(input_batch, result_batch):
     num_elems = input_batch[0][0].size
     perc = 1/num_elems
     y = [perc * i  for i in range(num_elems)]
-
     for instance_id in range(input_batch.shape[0]):
         input_instance = input_batch[instance_id][0]
         mean_result = result_batch['mean'][instance_id][0]
