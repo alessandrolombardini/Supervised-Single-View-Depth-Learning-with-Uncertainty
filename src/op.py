@@ -69,7 +69,7 @@ class Operator:
             if (epoch + 1) % 5 == 0: 
                 _,_,_ = self.test(data_loader, 'train', epoch)
                 psnr, rmse, ause = self.test(data_loader, 'test', epoch)
-                if rmse < best_rmse:
+                if rmse < best_rmse or best_rmse is None:
                     best_psnr = psnr
                     best_rmse = rmse
                     best_ause = ause
