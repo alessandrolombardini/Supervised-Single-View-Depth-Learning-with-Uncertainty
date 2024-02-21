@@ -9,12 +9,12 @@
 #    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_laplacian.out
 #fi
 # Checkpoint
-if [ -d "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.laplacian" ]; then
-    echo "Deleting results/checkpoints/aleatoric.laplacian..."
-    rm -rf /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.laplacian
-fi
+#if [ -d "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.laplacian" ]; then
+#    echo "Deleting results/checkpoints/aleatoric.laplacian..."
+#    rm -rf /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.laplacian
+#fi
 
 cd  /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/src
 pip3 install --upgrade pip
 pip3 install -r requirements.txt
-python3 main.py --uncertainty "aleatoric.laplacian"
+python3 main.py --uncertainty "aleatoric.laplacian" --data_name "mnist"

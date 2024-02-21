@@ -9,12 +9,12 @@
 #    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_gaussian.out
 #fi
 # Checkpoint
-if [ -d "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.gaussian" ]; then
-    echo "Deleting results/checkpoints/aleatoric.gaussian..."
-    rm -rf /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.gaussian
-fi
+#if [ -d "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.gaussian" ]; then
+#    echo "Deleting results/checkpoints/aleatoric.gaussian..."
+#    rm -rf /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/aleatoric.gaussian
+#fi
 
 cd  /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/src
 pip3 install --upgrade pip
 pip3 install -r requirements.txt
-python3 main.py --uncertainty "aleatoric.gaussian"
+python3 main.py --uncertainty "aleatoric.gaussian" --data_name "fashion_mnist"

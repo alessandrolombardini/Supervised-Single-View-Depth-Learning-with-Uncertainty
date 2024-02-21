@@ -9,12 +9,12 @@
 #    rm /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/slurms/R-training_gaussian.out
 #fi
 # Checkpoint
-if [ -d "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/normal" ]; then
-    echo "Deleting results/checkpoints/normal..."
-    rm -rf /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/normal
-fi
+#if [ -d "/workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/normal" ]; then
+#    echo "Deleting results/checkpoints/normal..."
+#    rm -rf /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/results/checkpoints/normal
+#fi
 
 cd  /workspace/Supervised-Single-View-Depth-Learning-with-Uncertainty/src
 pip3 install --upgrade pip
 pip3 install -r requirements.txt
-python3 main.py --uncertainty "normal"
+python3 main.py --uncertainty "normal"  --data_name "fashion_mnist"
