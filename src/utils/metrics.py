@@ -22,31 +22,39 @@ def compute_rmse(label, result):
     
 def compute_ause(input_batch, result_batch):
     """Compute the Area Under the Sparsification Error (AUSE)."""
+    input_batch = input_batch.cpu().numpy()
+    result_batch = {k: v.cpu().numpy() for k, v in result_batch.items()}
+    
     ause = []
-    input_batch = input_batch.cpu()
-    result_batch = {k: v.cpu() for k, v in result_batch.items()}
+    num_elems = input_batch[0][0].size
+    perc = 1/num_elems
+    y = [perc * i  for i in range(num_elems)]
+
     for instance_id in range(input_batch.shape[0]):
         input_instance = input_batch[instance_id][0]
         mean_result = result_batch['mean'][instance_id][0]
         var_result = result_batch['var'][instance_id][0]
         # Compute sparsification curves for the predicted depth map
-        # Sparsification
         def sparsification(error, uncertainty):
-            x, y = np.unravel_index(np.argsort(uncertainty, axis=None), uncertainty.shape)
-            ranking = np.stack((x, y), axis=1)
-            sparsification = []
-            for x, y in ranking:
-                sparsification.append(error[x][y])
-            return np.array(sparsification)    
-        error = (input_instance - mean_result).pow(2) # RMSE -> SE (without mean and root)
+            x, y = np.unravel_index(np.argsort(uncertainty, axis=None)[::-1], uncertainty.shape) # Descending order
+            return np.array([error[x][y] for x, y in zip(x, y)])
+        error = (input_instance - mean_result) ** 2 # RMSE -> SE (without mean and root)
         sparsification_prediction = sparsification(error,
                                                    var_result)
         sparsification_oracle = sparsification(error, 
                                                error)
-        # Calculate the error difference between the sparsification curves
-        sparsification_errors = sparsification_oracle - sparsification_prediction
+        sparsification_errors_means = []
+        sparsification_oracle_means = []
+        sum_errors_means = np.sum(sparsification_prediction)
+        sum_oracle_means = np.sum(sparsification_oracle)
+        for i in range(num_elems):
+            sparsification_errors_means.append(sum_errors_means / (num_elems - i))
+            sparsification_oracle_means.append(sum_oracle_means / (num_elems - i))
+            sum_errors_means -= sparsification_prediction[i]
+            sum_oracle_means -= sparsification_oracle[i]
         # Compute the AUSE by integrating the absolute values of the error differences
-        ause = np.trapz(np.abs(sparsification_errors), np.arange(sparsification_errors.shape[0]))
+        sparsification_errors = np.abs(np.array(sparsification_oracle_means) - np.array(sparsification_errors_means))
+        ause = np.trapz(sparsification_errors, y)
     return ause.mean()
 
 
@@ -72,6 +80,3 @@ def compute_auce(input_batch, result_batch):
         counter = np.array(counter) - np.array(range(0, 1, 100))
         auces.append(np.trapz(np.abs(counter), np.arange(0, 0.99, 0.01))) 
     return np.array(auces).mean()
-
-
-

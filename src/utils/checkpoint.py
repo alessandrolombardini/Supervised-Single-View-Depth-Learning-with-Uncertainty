@@ -17,15 +17,16 @@ class Checkpoint:
 
         self.config = config
         self.exp_dir = config.exp_dir
+        self.data_name = config.data_name
         self.exp_load = config.exp_load
         exp_type = config.uncertainty
         #now = datetime.now().strftime('%m%d_%H%M')
 
         if config.exp_load is None:
             #dir_fmt = '{}/{}_{}'.format(config.data_name, exp_type, now)
-            dir_fmt = 'checkpoints/{}'.format(exp_type)
+            dir_fmt = 'checkpoints/{}/{}'.format(self.data_name, exp_type)
         else:
-            dir_fmt = 'checkpoints/{}_{}'.format(exp_type, self.exp_load)
+            dir_fmt = 'checkpoints/{}/{}_{}'.format(self.data_name, exp_type, self.exp_load)
 
         self.model_dir = os.path.join(self.exp_dir, dir_fmt, 'model')
         self.log_dir = os.path.join(self.exp_dir, dir_fmt, 'log')

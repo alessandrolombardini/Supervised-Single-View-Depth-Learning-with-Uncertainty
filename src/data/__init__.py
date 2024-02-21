@@ -10,7 +10,11 @@ def get_dataloader(config):
     num_work = config.num_work
 
     trans = transforms.Compose([transforms.ToTensor(),
-                                transforms.Normalize((0.0,), (1.0,))])
+                                transforms.Normalize((0.0), (1.0))])
+    
+    trans_cifar10 = transforms.Compose([transforms.Grayscale(),
+                                        transforms.ToTensor(),
+                                        transforms.Normalize((0.0), (1.0))])
 
     if config.data_name == 'mnist':
         train_dataset = dset.MNIST(root=data_dir, train=True, transform=trans, download=True)
@@ -18,6 +22,9 @@ def get_dataloader(config):
     elif config.data_name == 'fashion_mnist':
         train_dataset = dset.FashionMNIST(root=data_dir, train=True, transform=trans, download=True)
         test_dataset = dset.FashionMNIST(root=data_dir, train=False, transform=trans, download=True)
+    elif config.data_name == 'cifar10':
+        train_dataset = dset.CIFAR10(root=data_dir, train=True, transform=trans_cifar10, download=True)
+        test_dataset = dset.CIFAR10(root=data_dir, train=False, transform=trans_cifar10, download=True)
 
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size,
                               num_workers=num_work, shuffle=True)
