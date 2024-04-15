@@ -37,14 +37,19 @@ def compute_ause(input_batch, result_batch):
         def sparsification(error, uncertainty):
             x, y = np.unravel_index(np.argsort(uncertainty, axis=None)[::-1], uncertainty.shape) # Descending order
             return np.array([error[x][y] for x, y in zip(x, y)])
-        error = np.sqrt(np.mean(np.power((input_instance - mean_result), 2)))  # RMSE
+
+
+        error = np.abs(input_instance - mean_result) # RMSE -> SE (without mean and root)
+        
         sparsification_prediction = sparsification(error, var_result)
         sparsification_oracle = sparsification(error, error)
+        
         # Normalization of the sparsification curves
         sparsification_prediction = (sparsification_prediction - np.min(sparsification_prediction)) \
                                     / (np.max(sparsification_prediction) - np.min(sparsification_prediction))
         sparsification_oracle = (sparsification_oracle - np.min(sparsification_oracle)) \
                                 / (np.max(sparsification_oracle) - np.min(sparsification_oracle))
+                                
         # Compute the means of the sparsification curves
         sparsification_errors_means = []
         sparsification_oracle_means = []
