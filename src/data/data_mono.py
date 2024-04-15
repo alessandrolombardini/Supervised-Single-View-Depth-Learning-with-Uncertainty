@@ -79,11 +79,11 @@ class DepthDataLoader(object):
             Dataset = DataLoadPreprocess  
             self.training_samples = Dataset(self.config, mode, transform=transform, device=device)
 
-            if config.distributed:
-                self.train_sampler = torch.utils.data.distributed.DistributedSampler(
-                    self.training_samples)
-            else:
-                self.train_sampler = None
+            #if config.distributed:
+            #    self.train_sampler = torch.utils.data.distributed.DistributedSampler(
+            #        self.training_samples)
+            #else:
+            self.train_sampler = None
 
             self.data = DataLoader(self.training_samples,
                                    batch_size=config.batch_size,
@@ -198,10 +198,10 @@ class DataLoadPreprocess(Dataset):
         self.transform = transform
         self.to_tensor = ToTensor(mode)
         self.is_for_online_eval = is_for_online_eval
-        if config.use_shared_dict:
-            self.reader = CachedReader(config.shared_dict)
-        else:
-            self.reader = ImReader()
+#        if config.use_shared_dict:
+#            self.reader = CachedReader(config.shared_dict)
+#        else:
+        self.reader = ImReader()
 
     def postprocess(self, sample):
         return sample

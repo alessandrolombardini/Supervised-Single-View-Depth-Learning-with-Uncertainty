@@ -74,10 +74,8 @@ def get_kitti_dataloader(config):
         "eigen_crop": False,
         "use_right": False
     }
-
-    config = DATASETS_CONFIG
+    config.update(DATASETS_CONFIG)
     
-    print(DATASETS_CONFIG)
     train_loader = DepthDataLoader(DATASETS_CONFIG, "train").data
     test_loader = DepthDataLoader(DATASETS_CONFIG, "online_eval").data
     

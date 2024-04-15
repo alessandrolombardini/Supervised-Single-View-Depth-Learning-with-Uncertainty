@@ -10,4 +10,8 @@
 **/results/**
 **slurm**
 
+<<<<<<< HEAD
 **/dataset/**
+=======
+**/dataset**
+>>>>>>> 29a8d5f1fd3c7510e9235124fce1059168c1f8d3

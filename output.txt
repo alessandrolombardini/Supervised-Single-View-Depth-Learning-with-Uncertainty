@@ -2,3 +2,9 @@ Training Gaussian - FASHION MNIST
 Training Gaussian - FASHION MNIST
 Training Gaussian - FASHION MNIST
 Training Gaussian - FASHION MNIST
+Training Gaussian - KITTI
+Training Gaussian - KITTI
+Training Gaussian - KITTI
+Training Gaussian - KITTI
+Training Gaussian - KITTI
+Training Gaussian - KITTI
