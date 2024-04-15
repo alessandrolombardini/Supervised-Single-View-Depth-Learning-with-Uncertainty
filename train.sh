@@ -1,7 +1,12 @@
 #!/bin/bash
 
-echo "Training Gaussian - FASHION MNIST"  >> output.txt
-sbatch scripts/sbatch_train_gaussian_fashion_mnist.sh &
+echo "Training Gaussian - KITTI"  >> output.txt
+sbatch scripts/sbatch_train_gaussian_kitti.sh &
+sleep 300
+
+
+#echo "Training Gaussian - FASHION MNIST"  >> output.txt
+#sbatch scripts/sbatch_train_gaussian_fashion_mnist.sh &
 #sleep 300
 #echo "Training T-Student - FASHION MNIST"  >> output.txt
 #sbatch scripts/sbatch_train_tstudent_fashion_mnist.sh &
