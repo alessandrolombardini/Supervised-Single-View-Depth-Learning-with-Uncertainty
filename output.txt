@@ -1,9 +1,4 @@
-Training Gaussian - CIFAR10
-Training T-Student - CIFAR10
-Training Laplacian - CIFAR10
-Training Normal - CIFAR10
-Training Gaussian - MNIST
-Training T-Student - MNIST
-Training Laplacian - MNIST
-Training Normal - MNIST
-Training Gaussian - CIFAR10
+Training Gaussian - FASHION MNIST
+Training Gaussian - FASHION MNIST
+Training Gaussian - FASHION MNIST
+Training Gaussian - FASHION MNIST

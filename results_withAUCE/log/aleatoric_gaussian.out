@@ -1,424 +1,0 @@
-pyxis: importing docker image ...
-pyxis: creating container filesystem ...
-pyxis: starting container ...
-Looking in indexes: https://pypi.org/simple, https://pypi.ngc.nvidia.com
-Requirement already satisfied: pip in /usr/local/lib/python3.10/dist-packages (23.2.1)
-Collecting pip
-  Obtaining dependency information for pip from https://files.pythonhosted.org/packages/8a/6a/19e9fe04fca059ccf770861c7d5721ab4c2aebc539889e97c7977528a53b/pip-24.0-py3-none-any.whl.metadata
-  Downloading pip-24.0-py3-none-any.whl.metadata (3.6 kB)
-Downloading pip-24.0-py3-none-any.whl (2.1 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 11.0 MB/s eta 0:00:00
-Installing collected packages: pip
-  Attempting uninstall: pip
-    Found existing installation: pip 23.2.1
-    Uninstalling pip-23.2.1:
-      Successfully uninstalled pip-23.2.1
-Successfully installed pip-24.0
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
-Looking in indexes: https://pypi.org/simple, https://pypi.ngc.nvidia.com
-Collecting torch-uncertainty (from -r requirements.txt (line 1))
-  Downloading torch_uncertainty-0.1.6-py3-none-any.whl.metadata (8.0 kB)
-Collecting timm (from torch-uncertainty->-r requirements.txt (line 1))
-  Downloading timm-0.9.12-py3-none-any.whl.metadata (60 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.6/60.6 kB 4.1 MB/s eta 0:00:00
-Collecting pytorch-lightning<2 (from torch-uncertainty->-r requirements.txt (line 1))
-  Downloading pytorch_lightning-1.9.5-py3-none-any.whl.metadata (23 kB)
-Requirement already satisfied: tensorboard in /usr/local/lib/python3.10/dist-packages (from torch-uncertainty->-r requirements.txt (line 1)) (2.9.0)
-Requirement already satisfied: einops in /usr/local/lib/python3.10/dist-packages (from torch-uncertainty->-r requirements.txt (line 1)) (0.6.1)
-Collecting torchinfo (from torch-uncertainty->-r requirements.txt (line 1))
-  Downloading torchinfo-1.8.0-py3-none-any.whl.metadata (21 kB)
-Requirement already satisfied: scipy in /usr/local/lib/python3.10/dist-packages (from torch-uncertainty->-r requirements.txt (line 1)) (1.11.1)
-Collecting huggingface-hub (from torch-uncertainty->-r requirements.txt (line 1))
-  Downloading huggingface_hub-0.20.3-py3-none-any.whl.metadata (12 kB)
-Requirement already satisfied: scikit-learn in /usr/local/lib/python3.10/dist-packages (from torch-uncertainty->-r requirements.txt (line 1)) (1.2.0)
-Requirement already satisfied: matplotlib in /usr/local/lib/python3.10/dist-packages (from torch-uncertainty->-r requirements.txt (line 1)) (3.7.3)
-Collecting glest==0.0.1a0 (from torch-uncertainty->-r requirements.txt (line 1))
-  Downloading glest-0.0.1a0-py3-none-any.whl.metadata (2.2 kB)
-Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (from glest==0.0.1a0->torch-uncertainty->-r requirements.txt (line 1)) (1.22.2)
-Requirement already satisfied: torch>=1.10.0 in /usr/local/lib/python3.10/dist-packages (from pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (2.1.0a0+32f93b1)
-Requirement already satisfied: tqdm>=4.57.0 in /usr/local/lib/python3.10/dist-packages (from pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (4.66.1)
-Requirement already satisfied: PyYAML>=5.4 in /usr/local/lib/python3.10/dist-packages (from pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (6.0.1)
-Requirement already satisfied: fsspec>2021.06.0 in /usr/local/lib/python3.10/dist-packages (from fsspec[http]>2021.06.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (2023.6.0)
-Collecting torchmetrics>=0.7.0 (from pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1))
-  Downloading torchmetrics-1.3.1-py3-none-any.whl.metadata (19 kB)
-Requirement already satisfied: packaging>=17.1 in /usr/local/lib/python3.10/dist-packages (from pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (23.1)
-Requirement already satisfied: typing-extensions>=4.0.0 in /usr/local/lib/python3.10/dist-packages (from pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (4.7.1)
-Collecting lightning-utilities>=0.6.0.post0 (from pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1))
-  Downloading lightning_utilities-0.10.1-py3-none-any.whl.metadata (4.8 kB)
-Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from huggingface-hub->torch-uncertainty->-r requirements.txt (line 1)) (3.12.4)
-Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from huggingface-hub->torch-uncertainty->-r requirements.txt (line 1)) (2.31.0)
-Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib->torch-uncertainty->-r requirements.txt (line 1)) (1.1.0)
-Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.10/dist-packages (from matplotlib->torch-uncertainty->-r requirements.txt (line 1)) (0.11.0)
-Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib->torch-uncertainty->-r requirements.txt (line 1)) (4.42.1)
-Requirement already satisfied: kiwisolver>=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib->torch-uncertainty->-r requirements.txt (line 1)) (1.4.5)
-Requirement already satisfied: pillow>=6.2.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib->torch-uncertainty->-r requirements.txt (line 1)) (9.2.0)
-Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib->torch-uncertainty->-r requirements.txt (line 1)) (3.1.1)
-Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.10/dist-packages (from matplotlib->torch-uncertainty->-r requirements.txt (line 1)) (2.8.2)
-Requirement already satisfied: joblib>=1.1.1 in /usr/local/lib/python3.10/dist-packages (from scikit-learn->torch-uncertainty->-r requirements.txt (line 1)) (1.3.2)
-Requirement already satisfied: threadpoolctl>=2.0.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn->torch-uncertainty->-r requirements.txt (line 1)) (3.2.0)
-Requirement already satisfied: absl-py>=0.4 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (1.4.0)
-Requirement already satisfied: grpcio>=1.24.3 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (1.58.0)
-Requirement already satisfied: google-auth<3,>=1.6.3 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (2.23.0)
-Requirement already satisfied: google-auth-oauthlib<0.5,>=0.4.1 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (0.4.6)
-Requirement already satisfied: markdown>=2.6.8 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (3.4.4)
-Requirement already satisfied: protobuf>=3.9.2 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (4.24.3)
-Requirement already satisfied: setuptools>=41.0.0 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (68.2.2)
-Requirement already satisfied: tensorboard-data-server<0.7.0,>=0.6.0 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (0.6.1)
-Requirement already satisfied: tensorboard-plugin-wit>=1.6.0 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (1.8.1)
-Requirement already satisfied: werkzeug>=1.0.1 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (2.3.7)
-Requirement already satisfied: wheel>=0.26 in /usr/local/lib/python3.10/dist-packages (from tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (0.41.2)
-Requirement already satisfied: torchvision in /usr/local/lib/python3.10/dist-packages (from timm->torch-uncertainty->-r requirements.txt (line 1)) (0.16.0a0)
-Collecting safetensors (from timm->torch-uncertainty->-r requirements.txt (line 1))
-  Downloading safetensors-0.4.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.8 kB)
-Requirement already satisfied: aiohttp!=4.0.0a0,!=4.0.0a1 in /usr/local/lib/python3.10/dist-packages (from fsspec[http]>2021.06.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (3.8.5)
-Requirement already satisfied: cachetools<6.0,>=2.0.0 in /usr/local/lib/python3.10/dist-packages (from google-auth<3,>=1.6.3->tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (5.3.1)
-Requirement already satisfied: pyasn1-modules>=0.2.1 in /usr/local/lib/python3.10/dist-packages (from google-auth<3,>=1.6.3->tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (0.3.0)
-Requirement already satisfied: rsa<5,>=3.1.4 in /usr/local/lib/python3.10/dist-packages (from google-auth<3,>=1.6.3->tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (4.9)
-Requirement already satisfied: urllib3<2.0 in /usr/local/lib/python3.10/dist-packages (from google-auth<3,>=1.6.3->tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (1.26.16)
-Requirement already satisfied: requests-oauthlib>=0.7.0 in /usr/local/lib/python3.10/dist-packages (from google-auth-oauthlib<0.5,>=0.4.1->tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (1.3.1)
-Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil>=2.7->matplotlib->torch-uncertainty->-r requirements.txt (line 1)) (1.16.0)
-Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.10/dist-packages (from requests->huggingface-hub->torch-uncertainty->-r requirements.txt (line 1)) (3.2.0)
-Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/dist-packages (from requests->huggingface-hub->torch-uncertainty->-r requirements.txt (line 1)) (3.4)
-Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests->huggingface-hub->torch-uncertainty->-r requirements.txt (line 1)) (2023.7.22)
-Requirement already satisfied: sympy in /usr/local/lib/python3.10/dist-packages (from torch>=1.10.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (1.12)
-Requirement already satisfied: networkx in /usr/local/lib/python3.10/dist-packages (from torch>=1.10.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (2.6.3)
-Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/dist-packages (from torch>=1.10.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (3.1.2)
-Requirement already satisfied: MarkupSafe>=2.1.1 in /usr/local/lib/python3.10/dist-packages (from werkzeug>=1.0.1->tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (2.1.3)
-Requirement already satisfied: attrs>=17.3.0 in /usr/local/lib/python3.10/dist-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]>2021.06.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (23.1.0)
-Requirement already satisfied: multidict<7.0,>=4.5 in /usr/local/lib/python3.10/dist-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]>2021.06.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (6.0.4)
-Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /usr/local/lib/python3.10/dist-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]>2021.06.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (4.0.3)
-Requirement already satisfied: yarl<2.0,>=1.0 in /usr/local/lib/python3.10/dist-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]>2021.06.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (1.9.2)
-Requirement already satisfied: frozenlist>=1.1.1 in /usr/local/lib/python3.10/dist-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]>2021.06.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (1.4.0)
-Requirement already satisfied: aiosignal>=1.1.2 in /usr/local/lib/python3.10/dist-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]>2021.06.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (1.3.1)
-Requirement already satisfied: pyasn1<0.6.0,>=0.4.6 in /usr/local/lib/python3.10/dist-packages (from pyasn1-modules>=0.2.1->google-auth<3,>=1.6.3->tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (0.5.0)
-Requirement already satisfied: oauthlib>=3.0.0 in /usr/local/lib/python3.10/dist-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<0.5,>=0.4.1->tensorboard->torch-uncertainty->-r requirements.txt (line 1)) (3.2.2)
-Requirement already satisfied: mpmath>=0.19 in /usr/local/lib/python3.10/dist-packages (from sympy->torch>=1.10.0->pytorch-lightning<2->torch-uncertainty->-r requirements.txt (line 1)) (1.3.0)
-Downloading torch_uncertainty-0.1.6-py3-none-any.whl (163 kB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 163.4/163.4 kB 7.4 MB/s eta 0:00:00
-Downloading glest-0.0.1a0-py3-none-any.whl (18 kB)
-Downloading pytorch_lightning-1.9.5-py3-none-any.whl (829 kB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 829.5/829.5 kB 8.7 MB/s eta 0:00:00
-Downloading huggingface_hub-0.20.3-py3-none-any.whl (330 kB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 330.1/330.1 kB 13.4 MB/s eta 0:00:00
-Downloading timm-0.9.12-py3-none-any.whl (2.2 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 17.7 MB/s eta 0:00:00
-Downloading torchinfo-1.8.0-py3-none-any.whl (23 kB)
-Downloading lightning_utilities-0.10.1-py3-none-any.whl (24 kB)
-Downloading torchmetrics-1.3.1-py3-none-any.whl (840 kB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 840.4/840.4 kB 26.5 MB/s eta 0:00:00
-Downloading safetensors-0.4.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.3 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 31.1 MB/s eta 0:00:00
-Installing collected packages: torchinfo, safetensors, lightning-utilities, huggingface-hub, torchmetrics, glest, timm, pytorch-lightning, torch-uncertainty
-Successfully installed glest-0.0.1a0 huggingface-hub-0.20.3 lightning-utilities-0.10.1 pytorch-lightning-1.9.5 safetensors-0.4.2 timm-0.9.12 torch-uncertainty-0.1.6 torchinfo-1.8.0 torchmetrics-1.3.1
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
-==>>> Device:  cuda:0
-Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz
-Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz to /mnt/sda/FashionMNIST/raw/train-images-idx3-ubyte.gz
-  0%|          | 0/26421880 [00:00<?, ?it/s]  0%|          | 98304/26421880 [00:00<00:31, 841944.09it/s]  1%|▏         | 393216/26421880 [00:00<00:13, 1896449.67it/s]  6%|▌         | 1507328/26421880 [00:00<00:04, 5602662.31it/s]  9%|▉         | 2359296/26421880 [00:00<00:03, 6447828.69it/s] 12%|█▏        | 3211264/26421880 [00:00<00:03, 6917768.18it/s] 15%|█▌        | 4063232/26421880 [00:00<00:03, 7245945.01it/s] 19%|█▊        | 4915200/26421880 [00:00<00:02, 7439914.67it/s] 21%|██▏       | 5668864/26421880 [00:00<00:02, 7138253.02it/s] 24%|██▍       | 6389760/26421880 [00:01<00:03, 6410571.39it/s] 27%|██▋       | 7045120/26421880 [00:01<00:03, 6298963.39it/s] 29%|██▉       | 7700480/26421880 [00:01<00:03, 6230864.11it/s] 32%|███▏      | 8388608/26421880 [00:01<00:02, 6218171.01it/s] 34%|███▍      | 9043968/26421880 [00:01<00:02, 6146533.62it/s] 37%|███▋      | 9699328/26421880 [00:01<00:02, 6117045.75it/s] 39%|███▉      | 10387456/26421880 [00:01<00:02, 6171051.25it/s] 42%|████▏     | 11075584/26421880 [00:01<00:02, 6195744.59it/s] 45%|████▍     | 11763712/26421880 [00:01<00:02, 6220882.41it/s] 47%|████▋     | 12451840/26421880 [00:02<00:02, 6233288.75it/s] 50%|████▉     | 13139968/26421880 [00:02<00:02, 6248500.78it/s] 52%|█████▏    | 13828096/26421880 [00:02<00:02, 6249418.96it/s] 55%|█████▍    | 14483456/26421880 [00:02<00:01, 6239996.98it/s] 57%|█████▋    | 15171584/26421880 [00:02<00:01, 6221503.65it/s] 60%|██████    | 15859712/26421880 [00:02<00:01, 6252106.29it/s] 63%|██████▎   | 16547840/26421880 [00:02<00:01, 6251735.81it/s] 65%|██████▌   | 17235968/26421880 [00:02<00:01, 6264303.88it/s] 68%|██████▊   | 17891328/26421880 [00:02<00:01, 6232079.13it/s] 70%|███████   | 18579456/26421880 [00:02<00:01, 6252712.88it/s] 73%|███████▎  | 19267584/26421880 [00:03<00:01, 6239384.58it/s] 76%|███████▌  | 19955712/26421880 [00:03<00:01, 6261558.13it/s] 78%|███████▊  | 20643840/26421880 [00:03<00:00, 6273954.45it/s] 81%|████████  | 21331968/26421880 [00:03<00:00, 6269693.03it/s] 83%|████████▎ | 22020096/26421880 [00:03<00:00, 6273447.02it/s] 86%|████████▌ | 22708224/26421880 [00:03<00:00, 6287035.46it/s] 89%|████████▊ | 23396352/26421880 [00:03<00:00, 6287317.41it/s] 91%|█████████ | 24084480/26421880 [00:03<00:00, 6291966.94it/s] 94%|█████████▎| 24739840/26421880 [00:03<00:00, 6171356.79it/s] 96%|█████████▌| 25395200/26421880 [00:04<00:00, 6163238.83it/s] 99%|█████████▊| 26083328/26421880 [00:04<00:00, 6191266.18it/s]100%|██████████| 26421880/26421880 [00:04<00:00, 6235235.50it/s]
-Extracting /mnt/sda/FashionMNIST/raw/train-images-idx3-ubyte.gz to /mnt/sda/FashionMNIST/raw
-
-Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-labels-idx1-ubyte.gz
-Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-labels-idx1-ubyte.gz to /mnt/sda/FashionMNIST/raw/train-labels-idx1-ubyte.gz
-  0%|          | 0/29515 [00:00<?, ?it/s]100%|██████████| 29515/29515 [00:00<00:00, 783908.83it/s]
-Extracting /mnt/sda/FashionMNIST/raw/train-labels-idx1-ubyte.gz to /mnt/sda/FashionMNIST/raw
-
-Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-images-idx3-ubyte.gz
-Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-images-idx3-ubyte.gz to /mnt/sda/FashionMNIST/raw/t10k-images-idx3-ubyte.gz
-  0%|          | 0/4422102 [00:00<?, ?it/s]  3%|▎         | 131072/4422102 [00:00<00:03, 1107030.58it/s] 11%|█         | 491520/4422102 [00:00<00:01, 2342504.58it/s] 22%|██▏       | 983040/4422102 [00:00<00:01, 3328942.27it/s] 34%|███▍      | 1507328/4422102 [00:00<00:00, 3916216.68it/s] 47%|████▋     | 2064384/4422102 [00:00<00:00, 4339395.30it/s] 59%|█████▊    | 2588672/4422102 [00:00<00:00, 4517256.48it/s] 72%|███████▏  | 3178496/4422102 [00:00<00:00, 4802187.93it/s] 84%|████████▍ | 3735552/4422102 [00:00<00:00, 4912333.79it/s] 98%|█████████▊| 4325376/4422102 [00:00<00:00, 5071544.83it/s]100%|██████████| 4422102/4422102 [00:00<00:00, 4462814.52it/s]
-Extracting /mnt/sda/FashionMNIST/raw/t10k-images-idx3-ubyte.gz to /mnt/sda/FashionMNIST/raw
-
-Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-labels-idx1-ubyte.gz
-Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-labels-idx1-ubyte.gz to /mnt/sda/FashionMNIST/raw/t10k-labels-idx1-ubyte.gz
-  0%|          | 0/5148 [00:00<?, ?it/s]100%|██████████| 5148/5148 [00:00<00:00, 22237154.47it/s]
-/usr/local/lib/python3.10/dist-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(_create_warning_msg(
-Extracting /mnt/sda/FashionMNIST/raw/t10k-labels-idx1-ubyte.gz to /mnt/sda/FashionMNIST/raw
-
-==>>> Total training batch number: 1875
-==>>> Total testing batch number: 313
-Tensorboard is activated.
-Run tensorboard --logdir=../results/checkpoints/aleatoric.gaussian/log
-Making model...
-Preparing loss function...
-/usr/local/lib/python3.10/dist-packages/torch/optim/lr_scheduler.py:432: UserWarning: To get the last learning rate computed by the scheduler, please use `get_last_lr()`.
-  warnings.warn("To get the last learning rate computed by the scheduler, "
-[Epoch: 000/200] Loss: -12642.308594
-[Epoch: 001/200] Loss: -84891.812500
-[Epoch: 002/200] Loss: -100811.234375
-[Epoch: 003/200] Loss: -94366.726562
-[Epoch: 004/200] Loss: -95772.882812
-[Epoch: 005/200] Loss: -99601.671875
-[Epoch: 006/200] Loss: -82941.859375
-[Epoch: 007/200] Loss: -115071.398438
-[Epoch: 008/200] Loss: -109426.507812
-[Epoch: 009/200] Loss: -106626.101562
-[Epoch: 009/200][TRAIN] PSNR 27.859688, RMSE 0.040493, AUSE 1.566010, AUCE 155.614184
-[Epoch: 009/200][TRAIN] PSNR 27.859688, RMSE 0.040493, AUSE 1.566010
-[Epoch: 009/200][TEST] PSNR 27.839725, RMSE 0.040588, AUSE 1.546336, AUCE 155.135751
-[Epoch: 009/200][TEST] PSNR 27.839725, RMSE 0.040588, AUSE 1.546336
-[Epoch: 010/200] Loss: -114059.898438
-[Epoch: 011/200] Loss: -101885.609375
-[Epoch: 012/200] Loss: -120073.382812
-[Epoch: 013/200] Loss: -90423.578125
-[Epoch: 014/200] Loss: -90025.062500
-[Epoch: 015/200] Loss: -95736.476562
-[Epoch: 016/200] Loss: -113923.195312
-[Epoch: 017/200] Loss: -130813.156250
-[Epoch: 018/200] Loss: -97939.265625
-[Epoch: 019/200] Loss: 146809.718750
-[Epoch: 019/200][TRAIN] PSNR 28.597233, RMSE 0.037194, AUSE 1.445837, AUCE 158.756293
-[Epoch: 019/200][TRAIN] PSNR 28.597233, RMSE 0.037194, AUSE 1.445837
-[Epoch: 019/200][TEST] PSNR 28.581125, RMSE 0.037264, AUSE 1.432523, AUCE 158.644193
-[Epoch: 019/200][TEST] PSNR 28.581125, RMSE 0.037264, AUSE 1.432523
-[Epoch: 020/200] Loss: -114484.906250
-[Epoch: 021/200] Loss: -105294.953125
-[Epoch: 022/200] Loss: -113452.234375
-[Epoch: 023/200] Loss: -122310.828125
-[Epoch: 024/200] Loss: -102395.710938
-[Epoch: 025/200] Loss: -123560.515625
-[Epoch: 026/200] Loss: -84700.890625
-[Epoch: 027/200] Loss: -129055.859375
-[Epoch: 028/200] Loss: -103484.492188
-[Epoch: 029/200] Loss: -121594.343750
-[Epoch: 029/200][TRAIN] PSNR 30.238504, RMSE 0.030791, AUSE 0.860765, AUCE 367.237800
-[Epoch: 029/200][TRAIN] PSNR 30.238504, RMSE 0.030791, AUSE 0.860765
-[Epoch: 029/200][TEST] PSNR 30.215006, RMSE 0.030876, AUSE 0.860491, AUCE 365.694997
-[Epoch: 029/200][TEST] PSNR 30.215006, RMSE 0.030876, AUSE 0.860491
-[Epoch: 030/200] Loss: -118646.140625
-[Epoch: 031/200] Loss: -111102.953125
-[Epoch: 032/200] Loss: -101851.156250
-[Epoch: 033/200] Loss: -97507.937500
-[Epoch: 034/200] Loss: -116367.648438
-[Epoch: 035/200] Loss: -102797.453125
-[Epoch: 036/200] Loss: -139017.421875
-[Epoch: 037/200] Loss: -118813.929688
-[Epoch: 038/200] Loss: -121301.093750
-[Epoch: 039/200] Loss: -130150.828125
-[Epoch: 039/200][TRAIN] PSNR 29.968695, RMSE 0.031803, AUSE 0.831272, AUCE 339.621832
-[Epoch: 039/200][TRAIN] PSNR 29.968695, RMSE 0.031803, AUSE 0.831272
-[Epoch: 039/200][TEST] PSNR 29.949980, RMSE 0.031869, AUSE 0.806801, AUCE 338.260919
-[Epoch: 039/200][TEST] PSNR 29.949980, RMSE 0.031869, AUSE 0.806801
-[Epoch: 040/200] Loss: -104914.585938
-[Epoch: 041/200] Loss: -99607.281250
-[Epoch: 042/200] Loss: -132125.421875
-[Epoch: 043/200] Loss: -134280.531250
-[Epoch: 044/200] Loss: -123809.125000
-[Epoch: 045/200] Loss: -123937.562500
-[Epoch: 046/200] Loss: -147827.750000
-[Epoch: 047/200] Loss: -136708.406250
-[Epoch: 048/200] Loss: -112284.703125
-[Epoch: 049/200] Loss: -140784.218750
-[Epoch: 049/200][TRAIN] PSNR 30.076399, RMSE 0.031379, AUSE 0.893617, AUCE 91.372324
-[Epoch: 049/200][TRAIN] PSNR 30.076399, RMSE 0.031379, AUSE 0.893617
-[Epoch: 049/200][TEST] PSNR 30.050095, RMSE 0.031473, AUSE 0.892222, AUCE 91.451123
-[Epoch: 049/200][TEST] PSNR 30.050095, RMSE 0.031473, AUSE 0.892222
-[Epoch: 050/200] Loss: -142956.875000
-[Epoch: 051/200] Loss: -142559.031250
-[Epoch: 052/200] Loss: -152391.218750
-[Epoch: 053/200] Loss: -151526.687500
-[Epoch: 054/200] Loss: -137964.906250
-[Epoch: 055/200] Loss: -157233.562500
-[Epoch: 056/200] Loss: -150278.218750
-[Epoch: 057/200] Loss: -157753.953125
-[Epoch: 058/200] Loss: -157601.656250
-[Epoch: 059/200] Loss: -157603.765625
-[Epoch: 059/200][TRAIN] PSNR 31.122589, RMSE 0.027818, AUSE 0.710931, AUCE 378.038752
-[Epoch: 059/200][TRAIN] PSNR 31.122589, RMSE 0.027818, AUSE 0.710931
-[Epoch: 059/200][TEST] PSNR 31.083706, RMSE 0.027943, AUSE 0.712484, AUCE 376.585405
-[Epoch: 059/200][TEST] PSNR 31.083706, RMSE 0.027943, AUSE 0.712484
-[Epoch: 060/200] Loss: -158458.125000
-[Epoch: 061/200] Loss: -145346.562500
-[Epoch: 062/200] Loss: -156138.250000
-[Epoch: 063/200] Loss: -155547.625000
-[Epoch: 064/200] Loss: -157096.281250
-[Epoch: 065/200] Loss: -144269.421875
-[Epoch: 066/200] Loss: -135780.421875
-[Epoch: 067/200] Loss: -157207.312500
-[Epoch: 068/200] Loss: -134891.890625
-[Epoch: 069/200] Loss: -159485.656250
-[Epoch: 069/200][TRAIN] PSNR 31.002489, RMSE 0.028206, AUSE 0.706408, AUCE 368.299615
-[Epoch: 069/200][TRAIN] PSNR 31.002489, RMSE 0.028206, AUSE 0.706408
-[Epoch: 069/200][TEST] PSNR 30.969555, RMSE 0.028314, AUSE 0.729886, AUCE 366.815980
-[Epoch: 069/200][TEST] PSNR 30.969555, RMSE 0.028314, AUSE 0.729886
-[Epoch: 070/200] Loss: -141071.906250
-[Epoch: 071/200] Loss: -149088.937500
-[Epoch: 072/200] Loss: -158208.437500
-[Epoch: 073/200] Loss: -157928.234375
-[Epoch: 074/200] Loss: -147577.968750
-[Epoch: 075/200] Loss: -158836.468750
-[Epoch: 076/200] Loss: -157090.421875
-[Epoch: 077/200] Loss: -164174.281250
-[Epoch: 078/200] Loss: -134688.796875
-[Epoch: 079/200] Loss: -137539.093750
-[Epoch: 079/200][TRAIN] PSNR 30.254356, RMSE 0.030779, AUSE 0.802109, AUCE 376.559302
-[Epoch: 079/200][TRAIN] PSNR 30.254356, RMSE 0.030779, AUSE 0.802109
-[Epoch: 079/200][TEST] PSNR 30.244303, RMSE 0.030808, AUSE 0.795206, AUCE 375.072297
-[Epoch: 079/200][TEST] PSNR 30.244303, RMSE 0.030808, AUSE 0.795206
-[Epoch: 080/200] Loss: -153705.687500
-[Epoch: 081/200] Loss: -150182.250000
-[Epoch: 082/200] Loss: -132877.750000
-[Epoch: 083/200] Loss: -169866.281250
-[Epoch: 084/200] Loss: -116732.414062
-[Epoch: 085/200] Loss: -113551.523438
-[Epoch: 086/200] Loss: -124165.398438
-[Epoch: 087/200] Loss: -134066.171875
-[Epoch: 088/200] Loss: -137013.812500
-[Epoch: 089/200] Loss: -146962.812500
-[Epoch: 089/200][TRAIN] PSNR 30.209990, RMSE 0.030901, AUSE 0.916113, AUCE 393.307432
-[Epoch: 089/200][TRAIN] PSNR 30.209990, RMSE 0.030901, AUSE 0.916113
-[Epoch: 089/200][TEST] PSNR 30.190081, RMSE 0.030969, AUSE 0.903134, AUCE 391.732581
-[Epoch: 089/200][TEST] PSNR 30.190081, RMSE 0.030969, AUSE 0.903134
-[Epoch: 090/200] Loss: -156089.312500
-[Epoch: 091/200] Loss: -160004.406250
-[Epoch: 092/200] Loss: -144242.390625
-[Epoch: 093/200] Loss: -149958.531250
-[Epoch: 094/200] Loss: -139203.578125
-[Epoch: 095/200] Loss: -152771.531250
-[Epoch: 096/200] Loss: -164236.406250
-[Epoch: 097/200] Loss: -158879.000000
-[Epoch: 098/200] Loss: -145292.156250
-[Epoch: 099/200] Loss: -147557.312500
-[Epoch: 099/200][TRAIN] PSNR 28.727085, RMSE 0.037043, AUSE 1.053490, AUCE 385.367679
-[Epoch: 099/200][TRAIN] PSNR 28.727085, RMSE 0.037043, AUSE 1.053490
-[Epoch: 099/200][TEST] PSNR 28.751076, RMSE 0.036847, AUSE 0.969713, AUCE 383.836270
-[Epoch: 099/200][TEST] PSNR 28.751076, RMSE 0.036847, AUSE 0.969713
-[Epoch: 100/200] Loss: -152352.781250
-[Epoch: 101/200] Loss: -178176.328125
-[Epoch: 102/200] Loss: -158683.859375
-[Epoch: 103/200] Loss: -160765.140625
-[Epoch: 104/200] Loss: -176122.062500
-[Epoch: 105/200] Loss: -159579.187500
-[Epoch: 106/200] Loss: -169433.218750
-[Epoch: 107/200] Loss: -162847.125000
-[Epoch: 108/200] Loss: -154593.562500
-[Epoch: 109/200] Loss: -152920.218750
-[Epoch: 109/200][TRAIN] PSNR 30.867731, RMSE 0.028660, AUSE 0.736736, AUCE 391.512679
-[Epoch: 109/200][TRAIN] PSNR 30.867731, RMSE 0.028660, AUSE 0.736736
-[Epoch: 109/200][TEST] PSNR 30.837803, RMSE 0.028755, AUSE 0.727805, AUCE 389.920192
-[Epoch: 109/200][TEST] PSNR 30.837803, RMSE 0.028755, AUSE 0.727805
-[Epoch: 110/200] Loss: -176599.125000
-[Epoch: 111/200] Loss: -146098.890625
-[Epoch: 112/200] Loss: -153045.453125
-[Epoch: 113/200] Loss: -165172.671875
-[Epoch: 114/200] Loss: -174699.906250
-[Epoch: 115/200] Loss: -169225.531250
-[Epoch: 116/200] Loss: -169142.734375
-[Epoch: 117/200] Loss: -164021.968750
-[Epoch: 118/200] Loss: -60922.605469
-[Epoch: 119/200] Loss: -176326.031250
-[Epoch: 119/200][TRAIN] PSNR 30.801943, RMSE 0.028863, AUSE 0.749428, AUCE 374.979688
-[Epoch: 119/200][TRAIN] PSNR 30.801943, RMSE 0.028863, AUSE 0.749428
-[Epoch: 119/200][TEST] PSNR 30.767365, RMSE 0.028982, AUSE 0.749733, AUCE 373.617522
-[Epoch: 119/200][TEST] PSNR 30.767365, RMSE 0.028982, AUSE 0.749733
-[Epoch: 120/200] Loss: -160819.781250
-[Epoch: 121/200] Loss: -152824.625000
-[Epoch: 122/200] Loss: -166188.828125
-[Epoch: 123/200] Loss: -165297.906250
-[Epoch: 124/200] Loss: -168594.234375
-[Epoch: 125/200] Loss: -169748.515625
-[Epoch: 126/200] Loss: -168980.375000
-[Epoch: 127/200] Loss: -156186.218750
-[Epoch: 128/200] Loss: -122445.515625
-[Epoch: 129/200] Loss: -174823.218750
-[Epoch: 129/200][TRAIN] PSNR 30.971611, RMSE 0.028310, AUSE 0.721458, AUCE 393.907007
-[Epoch: 129/200][TRAIN] PSNR 30.971611, RMSE 0.028310, AUSE 0.721458
-[Epoch: 129/200][TEST] PSNR 30.939661, RMSE 0.028414, AUSE 0.699367, AUCE 392.410832
-[Epoch: 129/200][TEST] PSNR 30.939661, RMSE 0.028414, AUSE 0.699367
-[Epoch: 130/200] Loss: -170620.375000
-[Epoch: 131/200] Loss: -169766.015625
-[Epoch: 132/200] Loss: -148973.875000
-[Epoch: 133/200] Loss: -168863.843750
-[Epoch: 134/200] Loss: -163072.375000
-[Epoch: 135/200] Loss: -172989.281250
-[Epoch: 136/200] Loss: -171061.406250
-[Epoch: 137/200] Loss: -167495.218750
-[Epoch: 138/200] Loss: -154660.875000
-[Epoch: 139/200] Loss: -171973.687500
-[Epoch: 139/200][TRAIN] PSNR 30.979765, RMSE 0.028281, AUSE 0.703770, AUCE 395.705217
-[Epoch: 139/200][TRAIN] PSNR 30.979765, RMSE 0.028281, AUSE 0.703770
-[Epoch: 139/200][TEST] PSNR 30.948317, RMSE 0.028383, AUSE 0.708198, AUCE 394.148452
-[Epoch: 139/200][TEST] PSNR 30.948317, RMSE 0.028383, AUSE 0.708198
-[Epoch: 140/200] Loss: -171505.937500
-[Epoch: 141/200] Loss: -163188.750000
-[Epoch: 142/200] Loss: -169866.968750
-[Epoch: 143/200] Loss: -163388.218750
-[Epoch: 144/200] Loss: -161139.312500
-[Epoch: 145/200] Loss: -167625.203125
-[Epoch: 146/200] Loss: -175334.437500
-[Epoch: 147/200] Loss: -146071.250000
-[Epoch: 148/200] Loss: -169567.062500
-[Epoch: 149/200] Loss: -169699.968750
-[Epoch: 149/200][TRAIN] PSNR 31.035919, RMSE 0.028100, AUSE 0.680040, AUCE 385.651781
-[Epoch: 149/200][TRAIN] PSNR 31.035919, RMSE 0.028100, AUSE 0.680040
-[Epoch: 149/200][TEST] PSNR 31.006622, RMSE 0.028195, AUSE 0.688947, AUCE 384.182428
-[Epoch: 149/200][TEST] PSNR 31.006622, RMSE 0.028195, AUSE 0.688947
-[Epoch: 150/200] Loss: -180161.750000
-[Epoch: 151/200] Loss: -190481.968750
-[Epoch: 152/200] Loss: -172147.125000
-[Epoch: 153/200] Loss: -177624.406250
-[Epoch: 154/200] Loss: -178340.671875
-[Epoch: 155/200] Loss: -176394.234375
-[Epoch: 156/200] Loss: -191091.328125
-[Epoch: 157/200] Loss: -176703.015625
-[Epoch: 158/200] Loss: -167603.000000
-[Epoch: 159/200] Loss: -176457.078125
-[Epoch: 159/200][TRAIN] PSNR 31.037169, RMSE 0.028094, AUSE 0.709723, AUCE 399.003457
-[Epoch: 159/200][TRAIN] PSNR 31.037169, RMSE 0.028094, AUSE 0.709723
-[Epoch: 159/200][TEST] PSNR 31.002092, RMSE 0.028208, AUSE 0.719330, AUCE 397.416469
-[Epoch: 159/200][TEST] PSNR 31.002092, RMSE 0.028208, AUSE 0.719330
-[Epoch: 160/200] Loss: -165412.953125
-[Epoch: 161/200] Loss: -185822.765625
-[Epoch: 162/200] Loss: -173274.812500
-[Epoch: 163/200] Loss: -181520.812500
-[Epoch: 164/200] Loss: -184425.531250
-[Epoch: 165/200] Loss: -174179.109375
-[Epoch: 166/200] Loss: -183597.843750
-[Epoch: 167/200] Loss: -190989.953125
-[Epoch: 168/200] Loss: -184438.921875
-[Epoch: 169/200] Loss: -119060.093750
-[Epoch: 169/200][TRAIN] PSNR 31.099968, RMSE 0.027894, AUSE 0.696810, AUCE 348.692402
-[Epoch: 169/200][TRAIN] PSNR 31.099968, RMSE 0.027894, AUSE 0.696810
-[Epoch: 169/200][TEST] PSNR 31.056053, RMSE 0.028035, AUSE 0.700272, AUCE 347.580040
-[Epoch: 169/200][TEST] PSNR 31.056053, RMSE 0.028035, AUSE 0.700272
-[Epoch: 170/200] Loss: -177264.406250
-[Epoch: 171/200] Loss: -170046.843750
-[Epoch: 172/200] Loss: -184102.484375
-[Epoch: 173/200] Loss: -170410.062500
-[Epoch: 174/200] Loss: -186869.875000
-[Epoch: 175/200] Loss: -164697.109375
-[Epoch: 176/200] Loss: -177187.093750
-[Epoch: 177/200] Loss: -180095.171875
-[Epoch: 178/200] Loss: -173292.531250
-[Epoch: 179/200] Loss: -176184.781250
-[Epoch: 179/200][TRAIN] PSNR 31.168413, RMSE 0.027674, AUSE 0.694191, AUCE 395.934948
-[Epoch: 179/200][TRAIN] PSNR 31.168413, RMSE 0.027674, AUSE 0.694191
-[Epoch: 179/200][TEST] PSNR 31.128422, RMSE 0.027803, AUSE 0.687729, AUCE 394.427608
-[Epoch: 179/200][TEST] PSNR 31.128422, RMSE 0.027803, AUSE 0.687729
-[Epoch: 180/200] Loss: -184697.468750
-[Epoch: 181/200] Loss: -180549.812500
-[Epoch: 182/200] Loss: -181437.078125
-[Epoch: 183/200] Loss: -177086.687500
-[Epoch: 184/200] Loss: -160831.156250
-[Epoch: 185/200] Loss: -160570.625000
-[Epoch: 186/200] Loss: -160729.828125
-[Epoch: 187/200] Loss: -171355.437500
-[Epoch: 188/200] Loss: -172743.562500
-[Epoch: 189/200] Loss: -179519.343750
-[Epoch: 189/200][TRAIN] PSNR 30.839661, RMSE 0.028742, AUSE 0.761180, AUCE 397.979138
-[Epoch: 189/200][TRAIN] PSNR 30.839661, RMSE 0.028742, AUSE 0.761180
-[Epoch: 189/200][TEST] PSNR 30.804045, RMSE 0.028860, AUSE 0.762423, AUCE 396.507042
-[Epoch: 189/200][TEST] PSNR 30.804045, RMSE 0.028860, AUSE 0.762423
-[Epoch: 190/200] Loss: -166937.000000
-[Epoch: 191/200] Loss: -181134.250000
-[Epoch: 192/200] Loss: -183182.031250
-[Epoch: 193/200] Loss: -180949.484375
-[Epoch: 194/200] Loss: -169616.218750
-[Epoch: 195/200] Loss: -138383.156250
-[Epoch: 196/200] Loss: -175976.250000
-[Epoch: 197/200] Loss: -176161.265625
-[Epoch: 198/200] Loss: -187660.562500
-[Epoch: 199/200] Loss: -182585.656250
-[Epoch: 199/200][TRAIN] PSNR 31.088449, RMSE 0.027931, AUSE 0.721808, AUCE 398.542795
-[Epoch: 199/200][TRAIN] PSNR 31.088449, RMSE 0.027931, AUSE 0.721808
-[Epoch: 199/200][TEST] PSNR 31.048697, RMSE 0.028060, AUSE 0.706155, AUCE 397.033590
-[Epoch: 199/200][TEST] PSNR 31.048697, RMSE 0.028060, AUSE 0.706155

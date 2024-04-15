@@ -9,3 +9,5 @@
 **/model/**
 **/results/**
 **slurm**
+
+**/dataset/**
