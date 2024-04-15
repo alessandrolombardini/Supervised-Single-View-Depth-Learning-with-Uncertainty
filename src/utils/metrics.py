@@ -19,7 +19,6 @@ def compute_rmse(label, result):
     mse = (result - label).pow(2).mean().sqrt()
     return mse
 
-    
 def compute_ause(input_batch, result_batch):
     """Compute the Area Under the Sparsification Error (AUSE)."""
     input_batch = input_batch.cpu().numpy()
@@ -38,7 +37,7 @@ def compute_ause(input_batch, result_batch):
         def sparsification(error, uncertainty):
             x, y = np.unravel_index(np.argsort(uncertainty, axis=None)[::-1], uncertainty.shape) # Descending order
             return np.array([error[x][y] for x, y in zip(x, y)])
-        error = np.abs(input_instance - mean_result) # RMSE -> SE (without mean and root)
+        error = (input_instance - mean_result).pow(2).mean().sqrt() # RMSE
         sparsification_prediction = sparsification(error, var_result)
         sparsification_oracle = sparsification(error, error)
         # Compute the means of the sparsification curves
@@ -52,7 +51,10 @@ def compute_ause(input_batch, result_batch):
             sum_errors_means -= sparsification_prediction[i]
             sum_oracle_means -= sparsification_oracle[i]
         # Compute the AUSE by integrating the absolute values of the error differences
-        sparsification_errors = np.abs(np.array(sparsification_oracle_means) - np.array(sparsification_errors_means))
+        sparsification_errors_means_normalized = (sparsification_errors_means - np.min(sparsification_errors_means)) / (np.max(sparsification_errors_means) - np.min(sparsification_errors_means))
+        sparsification_oracle_means_normalized = (sparsification_oracle_means - np.min(sparsification_oracle_means)) / (np.max(sparsification_oracle_means) - np.min(sparsification_oracle_means))
+        sparsification_errors = np.abs(np.array(sparsification_oracle_means_normalized) - 
+                                       np.array(sparsification_errors_means_normalized))
         auses.append(np.trapz(sparsification_errors, y))
 
     return np.array(auses).mean()
