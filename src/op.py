@@ -7,11 +7,11 @@ from utils.summary import summary
 
 
 class Operator:
-    def __init__(self, config, ckeck_point):
+    def __init__(self, config, check_point):
         self.config = config
         self.epochs = config.epochs
         self.uncertainty = config.uncertainty
-        self.ckpt = ckeck_point
+        self.ckpt = check_point
         self.tensorboard = config.tensorboard
         if self.tensorboard:
             self.summary_writer = SummaryWriter(self.ckpt.log_dir, 300)
