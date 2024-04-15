@@ -37,9 +37,14 @@ def compute_ause(input_batch, result_batch):
         def sparsification(error, uncertainty):
             x, y = np.unravel_index(np.argsort(uncertainty, axis=None)[::-1], uncertainty.shape) # Descending order
             return np.array([error[x][y] for x, y in zip(x, y)])
-        error = (input_instance - mean_result).pow(2).mean().sqrt() # RMSE
+        error = np.sqrt(np.mean(np.power((input_instance - mean_result), 2)))  # RMSE
         sparsification_prediction = sparsification(error, var_result)
         sparsification_oracle = sparsification(error, error)
+        # Normalization of the sparsification curves
+        sparsification_prediction = (sparsification_prediction - np.min(sparsification_prediction)) \
+                                    / (np.max(sparsification_prediction) - np.min(sparsification_prediction))
+        sparsification_oracle = (sparsification_oracle - np.min(sparsification_oracle)) \
+                                / (np.max(sparsification_oracle) - np.min(sparsification_oracle))
         # Compute the means of the sparsification curves
         sparsification_errors_means = []
         sparsification_oracle_means = []
@@ -51,10 +56,8 @@ def compute_ause(input_batch, result_batch):
             sum_errors_means -= sparsification_prediction[i]
             sum_oracle_means -= sparsification_oracle[i]
         # Compute the AUSE by integrating the absolute values of the error differences
-        sparsification_errors_means_normalized = (sparsification_errors_means - np.min(sparsification_errors_means)) / (np.max(sparsification_errors_means) - np.min(sparsification_errors_means))
-        sparsification_oracle_means_normalized = (sparsification_oracle_means - np.min(sparsification_oracle_means)) / (np.max(sparsification_oracle_means) - np.min(sparsification_oracle_means))
-        sparsification_errors = np.abs(np.array(sparsification_oracle_means_normalized) - 
-                                       np.array(sparsification_errors_means_normalized))
+        sparsification_errors = np.abs(np.array(sparsification_oracle_means) - 
+                                       np.array(sparsification_errors_means))
         auses.append(np.trapz(sparsification_errors, y))
 
     return np.array(auses).mean()
