@@ -7,7 +7,6 @@ import os
 
 
 def get_dataloader(config):
-    print(config.data_name)
     if config.data_name == 'kitti':
         return get_kitti_dataloader(config)
     
@@ -74,7 +73,12 @@ def get_kitti_dataloader(config):
         "eigen_crop": False,
         "use_right": False
     }
-    config.update(DATASETS_CONFIG)
+    config_dict = vars(config)
+    config_dict.update(DATASETS_CONFIG)
+
+    from argparse import Namespace
+
+    config = Namespace(**config_dict)
     
     train_loader = DepthDataLoader(DATASETS_CONFIG, "train").data
     test_loader = DepthDataLoader(DATASETS_CONFIG, "online_eval").data
