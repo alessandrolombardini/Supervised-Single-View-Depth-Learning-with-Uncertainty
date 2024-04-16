@@ -66,13 +66,12 @@ class DepthDataLoader(object):
 
         self.config = config
 
-        
-        img_size = self.config.get("img_size", None)
-        img_size = img_size if self.config.get(
-            "do_input_resize", False) else None
+        #img_size = self.config.get("img_size", None)
+        #img_size = img_size if self.config.get(
+        #    "do_input_resize", False) else None
 
-        if transform is None:
-            transform = preprocessing_transforms(mode, size=img_size)
+        #if transform is None:
+        #    transform = preprocessing_transforms(mode, size=img_size)
 
         if mode == 'train':
 
@@ -180,6 +179,7 @@ class ImReader:
 
     # @cache
     def open(self, fpath):
+        print(fpath)
         return Image.open(fpath)
 
 
@@ -188,10 +188,10 @@ class DataLoadPreprocess(Dataset):
         self.config = config
         
         if mode == 'online_eval':
-            with open(config['filenames_file_eval'], 'r') as f:
+            with open(config.filenames_file_eval, 'r') as f:
                 self.filenames = f.readlines()
         else:
-            with open(config['filenames_file'], 'r') as f:
+            with open(config.filenames_file, 'r') as f:
                 self.filenames = f.readlines()
 
         self.mode = mode
