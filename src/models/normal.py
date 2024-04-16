@@ -37,8 +37,12 @@ class NORMAL(nn.Module):
 
     def forward(self, x):
         indices = []
+
+        feat = x.permute(0, 3, 1, 2)  # Permute to have channels at the beginning
+        #feat = x
+        print('step')
+
         unpool_sizes = []
-        feat = x
 
         # encoder path, keep track of pooling indices and features size
         for i in range(0, 2):

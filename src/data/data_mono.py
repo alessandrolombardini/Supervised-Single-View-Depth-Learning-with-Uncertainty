@@ -66,6 +66,7 @@ class DepthDataLoader(object):
 
         self.config = config
 
+        
         #img_size = self.config.get("img_size", None)
         #img_size = img_size if self.config.get(
         #    "do_input_resize", False) else None
@@ -179,7 +180,6 @@ class ImReader:
 
     # @cache
     def open(self, fpath):
-        print(fpath)
         return Image.open(fpath)
 
 
