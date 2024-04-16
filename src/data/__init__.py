@@ -43,45 +43,8 @@ def get_dataloader(config):
     return data_loader
 
 def get_kitti_dataloader(config):
-    HOME_DIR = os.path.expanduser("~")
-    DATASETS_CONFIG = {
-        "save_dir": os.path.expanduser("./depth_anything_finetune"),
-        "project": "ZoeDepth",
-        "tags": '',
-        "notes": "",
-        "gpu": None,
-        "root": ".",
-        "uid": None,
-        "print_losses": False,
-        "dataset": "kitti",
-        "min_depth": 0.001,
-        "max_depth": 80,
-        "data_path": os.path.join(HOME_DIR, "../dataset/kitti/raw_data"),
-        "gt_path": os.path.join(HOME_DIR, "../dataset/kitti/data_depth_annotated_zoedepth"),
-        "filenames_file": "../dataset/kitti/kitti_eigen_train_files_with_gt.txt",
-        "input_height": 352,
-        "input_width": 1216,  # 704
-        "data_path_eval": os.path.join(HOME_DIR, "../dataset/kitti/raw_data"),
-        "gt_path_eval": os.path.join(HOME_DIR, "../dataset/kitti/data_depth_annotated_zoedepth"),
-        "filenames_file_eval": "../dataset/kitti/kitti_eigen_test_files_with_gt.txt",
-        "min_depth_eval": 1e-3,
-        "max_depth_eval": 80,
-        "do_random_rotate": True,
-        "degree": 1.0,
-        "do_kb_crop": True,
-        "garg_crop": True,
-        "eigen_crop": False,
-        "use_right": False
-    }
-    config_dict = vars(config)
-    config_dict.update(DATASETS_CONFIG)
-
-    from argparse import Namespace
-
-    config = Namespace(**config_dict)
-    
-    train_loader = DepthDataLoader(DATASETS_CONFIG, "train").data
-    test_loader = DepthDataLoader(DATASETS_CONFIG, "online_eval").data
+    train_loader = DepthDataLoader(config, "train").data
+    test_loader = DepthDataLoader(config, "online_eval").data
     
     data_loader = {'train': train_loader, 
                    'test': test_loader}

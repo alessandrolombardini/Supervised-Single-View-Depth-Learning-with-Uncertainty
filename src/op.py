@@ -39,12 +39,11 @@ class Operator:
         for epoch in range(last_epoch, self.epochs):
             self.model.train()
             for _, batch_data in enumerate(data_loader['train']):
-                batch_input, batch_label = batch_data
-                batch_input = batch_input.to(self.config.device)
-                batch_label = batch_label.to(self.config.device)
+                batch_input = batch_data['image'].to(self.config.device)
+                batch_label = batch_data['depth'].to(self.config.device)
                 # Forward
                 batch_results = self.model(batch_input)
-                loss = self.criterion(batch_results, batch_input)
+                loss = self.criterion(batch_results, batch_label)
                 # Backward
                 self.optimizer.zero_grad()
                 loss.backward()
