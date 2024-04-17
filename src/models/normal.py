@@ -10,6 +10,7 @@ class NORMAL(nn.Module):
         super(NORMAL, self).__init__()
         self.drop_rate = config.drop_rate
         in_channels = config.in_channels
+        out_channels = 1
         filter_config = (64, 128)
 
         self.encoders = nn.ModuleList()
@@ -34,7 +35,6 @@ class NORMAL(nn.Module):
 
         # final classifier (equivalent to a fully connected layer)
         #self.classifier = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
-        out_channels = 1
         self.classifier = nn.Conv2d(filter_config[0], out_channels, 3, 1, 1)
 
     def forward(self, x):

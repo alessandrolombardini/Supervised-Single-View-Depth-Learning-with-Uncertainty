@@ -52,6 +52,7 @@ class Operator:
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
+                break
             # Feedback
             print('[Epoch: {:03d}/{:03d}] Loss: {:5f}'.format(epoch, self.config.epochs, loss.item()))
             if self.tensorboard:
@@ -102,9 +103,11 @@ class Operator:
         with torch.no_grad():
             self.model.eval()
             for _, batch_data in enumerate(data_loader[label]):
-                batch_input, batch_label = batch_data
-                batch_input = batch_input.to(self.config.device)
-                batch_label = batch_label.to(self.config.device)
+                batch_input = batch_data['image'].to(self.config.device)
+                batch_label = batch_data['depth'].to(self.config.device)
+                # Permute to have channels at the beginning
+                batch_input = batch_input.permute(0, 3, 1, 2) 
+                batch_label = batch_label.permute(0, 3, 1, 2)  
                 # Forward
                 batch_results = self.model(batch_input)
                 # Metrices 
@@ -125,6 +128,7 @@ class Operator:
                     #current_auce = compute_auce(batch_input, batch_results)
                     #auces.append(current_auce)
                     #total_auce += current_auce
+                break
             # Feedback      
             if self.uncertainty != "normal":
                 #print('[Epoch: {:03d}/{:03d}][{}] PSNR {:5f}, RMSE {:5f}, AUSE {:5f}, AUCE {:5f}'

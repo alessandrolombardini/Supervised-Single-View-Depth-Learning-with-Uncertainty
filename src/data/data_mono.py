@@ -87,7 +87,7 @@ class DepthDataLoader(object):
 
             self.data = DataLoader(self.training_samples,
                                    batch_size=config.batch_size,
-                                   shuffle=(self.train_sampler is None),
+                                   shuffle=False,
                                    num_workers=config.workers,
                                    pin_memory=True,
                                    persistent_workers=True,
@@ -213,15 +213,11 @@ class DataLoadPreprocess(Dataset):
 
         if self.mode == 'train':
             if self.config.dataset == 'kitti' and self.config.use_right and random.random() > 0.5:
-                image_path = os.path.join(
-                    self.config.data_path, remove_leading_slash(sample_path.split()[3]))
-                depth_path = os.path.join(
-                    self.config.gt_path, remove_leading_slash(sample_path.split()[4]))
+                image_path = os.path.join(self.config.data_path, remove_leading_slash(sample_path.split()[3]))
+                depth_path = os.path.join(self.config.gt_path, remove_leading_slash(sample_path.split()[4]))
             else:
-                image_path = os.path.join(
-                    self.config.data_path, remove_leading_slash(sample_path.split()[0]))
-                depth_path = os.path.join(
-                    self.config.gt_path, remove_leading_slash(sample_path.split()[1]))
+                image_path = os.path.join(self.config.data_path, remove_leading_slash(sample_path.split()[0]))
+                depth_path = os.path.join(self.config.gt_path, remove_leading_slash(sample_path.split()[1]))
 
             image = self.reader.open(image_path)
             depth_gt = self.reader.open(depth_path)
