@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "Training Normal - KITTI"  >> output.txt
-sbatch scripts/sbatch_train_normal_kitti.sh &
-sleep 300
+#echo "Training Normal - KITTI"  >> output.txt
+#sbatch scripts/sbatch_train_normal_kitti.sh &
+#sleep 300
 echo "Training Gaussian - KITTI"  >> output.txt
 sbatch scripts/sbatch_train_gaussian_kitti.sh &
 sleep 300

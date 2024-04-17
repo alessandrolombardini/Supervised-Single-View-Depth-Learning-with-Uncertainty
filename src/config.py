@@ -15,7 +15,7 @@ parser.add_argument("--exp_load", type=str, default=None)
 # Data
 parser.add_argument("--data_dir", type=str, default="/mnt/sda")
 parser.add_argument("--data_name", type=str, default="kitti", choices=('kitti'))
-parser.add_argument('--batch_size', type=int, default=16)
+parser.add_argument('--batch_size', type=int, default=8)
 parser.add_argument('--rgb_range', type=int, default=3)         # !
 
 # Model
