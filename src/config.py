@@ -14,8 +14,8 @@ parser.add_argument("--exp_load", type=str, default=None)
 
 # Data
 parser.add_argument("--data_dir", type=str, default="/mnt/sda")
-parser.add_argument("--data_name", type=str, default="kitti", choices=('mnist', 'fashion_mnist', 'cifar10', 'kitti'))
-parser.add_argument('--batch_size', type=int, default=32)
+parser.add_argument("--data_name", type=str, default="kitti", choices=('kitti'))
+parser.add_argument('--batch_size', type=int, default=1)
 parser.add_argument('--rgb_range', type=int, default=3)         # !
 
 # Model
@@ -43,7 +43,7 @@ parser.add_argument('--n_samples', type=int, default=25)
 
 parser.add_argument("--dataset", type=str, default="kitti")
 parser.add_argument("--distributed", type=bool, default=False)
-parser.add_argument("--workers", type=int, default=16)
+parser.add_argument("--workers", type=int, default=2)
 parser.add_argument("--clip_grad", type=float, default=0.1)
 parser.add_argument("--use_shared_dict", type=bool, default=False)
 parser.add_argument("--shared_dict", type=str, default=None)

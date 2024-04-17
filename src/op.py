@@ -4,6 +4,7 @@ from losses import Loss
 from utils.optimizer import make_optimizer
 from utils.metrics import compute_psnr, compute_rmse, compute_ause, compute_auce
 from utils.summary import summary
+from tqdm import tqdm
 
 
 class Operator:
@@ -38,17 +39,14 @@ class Operator:
         best_ause = None
         for epoch in range(last_epoch, self.epochs):
             self.model.train()
-            for _, batch_data in enumerate(data_loader['train']):
+            for _, batch_data in tqdm(enumerate(data_loader['train'])):
                 batch_input = batch_data['image'].to(self.config.device)
                 batch_label = batch_data['depth'].to(self.config.device)
-                batch_input = batch_input.permute(0, 3, 1, 2)  # Permute to have channels at the beginning
-                batch_label = batch_label.permute(0, 3, 1, 2)  # Permute to have channels at the beginning
-        
-
+                # Permute to have channels at the beginning
+                batch_input = batch_input.permute(0, 3, 1, 2) 
+                batch_label = batch_label.permute(0, 3, 1, 2)  
                 # Forward
                 batch_results = self.model(batch_input)
-                print(batch_results['mean'].shape)
-                print(batch_label.shape)
                 loss = self.criterion(batch_results, batch_label)
                 # Backward
                 self.optimizer.zero_grad()
