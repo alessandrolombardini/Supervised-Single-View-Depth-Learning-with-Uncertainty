@@ -47,7 +47,7 @@ class Operator:
 
                 # Forward
                 batch_results = self.model(batch_input)
-                print(batch_results.shape)
+                print(batch_results['mean'].shape)
                 print(batch_label.shape)
                 loss = self.criterion(batch_results, batch_label)
                 # Backward
