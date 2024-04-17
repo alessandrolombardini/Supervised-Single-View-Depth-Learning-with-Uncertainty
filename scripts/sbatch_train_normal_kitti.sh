@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=training_normal_kitti
+#SBATCH --job-name=normal_kitti
 #SBATCH -N 1
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-cpu=20G
