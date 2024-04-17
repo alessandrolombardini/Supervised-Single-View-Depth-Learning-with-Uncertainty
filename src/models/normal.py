@@ -33,14 +33,13 @@ class NORMAL(nn.Module):
                                           decoder_n_layers[i]))
 
         # final classifier (equivalent to a fully connected layer)
-        self.classifier = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
+        #self.classifier = nn.Conv2d(filter_config[0], in_channels, 3, 1, 1)
+        out_channels = 1
+        self.classifier = nn.Conv2d(filter_config[0], out_channels, 3, 1, 1)
 
     def forward(self, x):
         indices = []
-
         feat = x
-        print('step')
-    
         unpool_sizes = []
 
         # encoder path, keep track of pooling indices and features size
