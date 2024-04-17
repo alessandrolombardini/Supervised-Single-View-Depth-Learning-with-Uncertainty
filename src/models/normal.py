@@ -38,9 +38,9 @@ class NORMAL(nn.Module):
     def forward(self, x):
         indices = []
 
-        #feat = x
+        feat = x
         print('step')
-
+    
         unpool_sizes = []
 
         # encoder path, keep track of pooling indices and features size
