@@ -38,7 +38,6 @@ class NORMAL(nn.Module):
     def forward(self, x):
         indices = []
 
-        feat = x.permute(0, 3, 1, 2)  # Permute to have channels at the beginning
         #feat = x
         print('step')
 
